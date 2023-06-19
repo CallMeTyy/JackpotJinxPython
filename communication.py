@@ -23,13 +23,13 @@ def read_incoming():
 
 
 def send_outgoing(msg):
-    pass
+    arduino.write(str.encode(msg))
 
 
 def process_data():
     while True:
         msg_in = read_incoming()
-        # send the data out to encoding and eventually get a message back to send out
+        # @TODO send the data out to encoding and eventually get a message back to send out
         msg_out = "test message"
         if len(msg_out) > 0:
             send_outgoing(msg_out)
