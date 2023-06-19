@@ -34,6 +34,7 @@ def process_data():
         if len(msg_out) > 0:
             send_outgoing(msg_out)
 
+
 def encode_decode(msg):
     return endecoder.Encode(endecoder.Decode(msg))
 
@@ -42,6 +43,6 @@ def encode_decode(msg):
 port = get_port()
 baud_rate = constants.BAUD_RATE
 arduino = serial.Serial(port=port, baudrate=baud_rate, timeout=0)
-box_placable = False
 process_data()
+
 
