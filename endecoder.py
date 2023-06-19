@@ -11,3 +11,9 @@ def Encode(processedData):
     encodedData = ""
     # Encode the processed data into a simple protocol to send back to the arduino
     return encodedData
+
+def decode_header(input):
+    """ checks what the header of the message is. After that, goes to specific decoder for the rest"""
+    head = input[:3]
+    tail = input[3:]
+

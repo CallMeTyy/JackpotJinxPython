@@ -19,11 +19,13 @@ def get_port():
 def read_incoming():
     data = arduino.readline()[:-2]  # the last bit gets rid of the new-line chars
     if constants.DEBUG:
-        print(data)
+       print(data)
     return data
 
 
 def send_outgoing(msg):
+    if constants.DEBUG:
+        print(msg)
     arduino.write(str.encode(msg))
 
 
@@ -43,6 +45,7 @@ def encode_decode(msg):
 port = get_port()
 baud_rate = constants.BAUD_RATE
 arduino = serial.Serial(port=port, baudrate=baud_rate, timeout=0)
-process_data()
+
+
 
 
