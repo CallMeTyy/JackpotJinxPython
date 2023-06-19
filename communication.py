@@ -17,15 +17,19 @@ def get_port():
 
 
 def read_incoming():
-    data = arduino.readline()[:-2]  # the last bit gets rid of the new-line chars
-    if constants.DEBUG:
-       print(data)
-    return data
+    print("reading...")
+    msg = arduino.readline()[:-2]  # the last bit gets rid of the new-line chars
+    if len(msg) > 0:
+        if constants.DEBUG:
+            data_str = str(msg)[2:-1]
+            print(data_str)
+            return data_str
+    return msg
 
 
 def send_outgoing(msg):
-    if constants.DEBUG:
-        print(msg)
+    # if constants.DEBUG:
+    #     print(msg)
     arduino.write(str.encode(msg))
 
 
@@ -38,6 +42,7 @@ def process_data():
 
 
 def encode_decode(msg):
+    # return "pong"
     return endecoder.Encode(endecoder.Decode(msg))
 
 
@@ -45,6 +50,10 @@ def encode_decode(msg):
 port = get_port()
 baud_rate = constants.BAUD_RATE
 arduino = serial.Serial(port=port, baudrate=baud_rate, timeout=0)
+
+send_outgoing("hello!")
+read_incoming()
+process_data()
 
 
 
