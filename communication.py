@@ -1,6 +1,7 @@
 import serial
 import serial.tools.list_ports
 import constants
+import endecoder
 
 
 def get_port():
@@ -29,11 +30,12 @@ def send_outgoing(msg):
 def process_data():
     while True:
         msg_in = read_incoming()
-        # @TODO send the data out to encoding and eventually get a message back to send out
-        msg_out = "test message"
+        msg_out = encode_decode(msg_in)
         if len(msg_out) > 0:
             send_outgoing(msg_out)
 
+def encode_decode(msg):
+    return endecoder.Encode(endecoder.Decode(msg))
 
 
 #initialisiation
