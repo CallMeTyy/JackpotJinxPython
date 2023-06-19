@@ -1,0 +1,7 @@
+
+
+ARDUINO_PORT_MAC = '/dev/cu.usbmodem142101'
+ARDUINO_PORT_WINDOWS = 'COM3'
+BAUD_RATE = 9600
+
+DEBUG = False
