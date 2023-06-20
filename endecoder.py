@@ -47,6 +47,7 @@ def encode_sys_stop():
 
 def decode(input: str, controller):
     """ checks what the header of the message is. After that, goes to specific decoder for the rest"""
+    input = input.capitalize
     header = input[:constants.HEADER_LENGTH]   
     tail = input[constants.TAIL_LENGTH:]
     
