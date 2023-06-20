@@ -1,5 +1,7 @@
+import communication
 import constants
 import Dataset
+import endecoder
 
 
 class Controller:
@@ -26,33 +28,33 @@ class Controller:
 
     def stop_button_pressed(self, reel_num):
         if self.reels_spinning:
-            # set reel speed to 0
-            # request reel value
-            # stop playing reel spinning sound
-            # play reel stopped sound
+            self.send(endecoder.encode_reel_stop(reel_num))
+            self.send(endecoder.encode_reel_requestangle(reel_num))
+            # TODO stop playing reel spinning sound
+            # TODO play reel stopped sound
             pass
 
     def lever_pulled(self):
         if not self.installation_active:
             self.installation_active = True
             self.reels_spinning = True
-            # stop playing idle music
+            # TODO stop playing idle music
             for i in range(0, 2):
                 self.start_reel_spin(i)
-            # start playing reel spinning music
+            # TODO start playing reel spinning music
+            self.send(endecoder.encode_light_pattern(constants.LED_SPIN_PATTERN))
             pass
 
     def start_reel_spin(self, reel_num):
-        # play reel spinning sound
-        # start spinning reel at certain speed defined in constants
-        # set LED pattern to spinning
+        # TODO play reel spinning sound
+        self.send(endecoder.encode_reel_setv(reel_num, constants.REEL_SPEED))
         pass
 
     def platform_sequence(self, money_lost):
         # stage 1: starts immediately
         self.platform_stage_1(money_lost)
         # stage 2: waits until platform is raised (we might not get a signal for this, so we might have to estimate the time)
-        self.platform_stage_2()
+        self.platform_stage_2(money_lost)
         # stage 3: waits until voice is finished.
         self.platform_stage_3()
         # stage 4: when platform is fully lowered again
@@ -62,12 +64,12 @@ class Controller:
 
     def platform_stage_1(self, money_lost):
         # TODO play victory music
-        # TODO set LED pattern to win
-        # TODO start raising platform
+        self.send(endecoder.encode_light_pattern(constants.LED_WIN_PATTERN))
+        self.send(endecoder.encode_platform_height(money_lost))
         pass
 
-    def platform_stage_2(self):
-        # TODO LED bar is set to the right height
+    def platform_stage_2(self, money_lost):
+        self.send(endecoder.encode_light_height(money_lost))
         vals = "" + str(self.reel_values[0]) + "," + str(self.reel_values[1]) + "," + str(self.reel_values[2])
         Dataset.PlayVoice(vals)
         # Dataset.PlayVoice((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
@@ -75,12 +77,12 @@ class Controller:
 
     def platform_stage_3(self):
         # TODO shredding sounds start
-        # TODO platform starts lowering again
-        # TODO fan turns on
+        self.send(endecoder.encode_platform_height(0))
+        self.send(endecoder.encode_fan_start())
         pass
 
     def platform_stage_4(self):
-        # TODO fans are stopped
+        self.send(endecoder.encode_fan_stop())
         self.finish_sequence()
 
     def finish_sequence(self):
@@ -89,6 +91,7 @@ class Controller:
         for reel in self.reel_values:
             reel = -1
         self.installation_active = False
+        self.send(endecoder.encode_light_pattern(constants.LED_IDLE_PATTERN))
         pass
 
     # if the installation notices a problem in the hardware this method will stop it in its tracks and try to recover
@@ -105,15 +108,19 @@ class Controller:
     def emergency_stop(self):
         self.error_state = True
         # TODO stop platform engine
-        # TODO stop fan
-        # TODO stop reels
+        self.send(endecoder.encode_fan_stop())
+        for i in range(0, 2):
+            self.send(endecoder.encode_reel_stop(i))
         pass
 
     def all_good(self):
         return self.calibration_done and not self.error_state
 
+    def send(self, msg):
+        communication.send_outgoing(msg)
+
 
 # testing stuff
 controller = Controller()
-controller.reel_values = [0, 0, 0]
+controller.reel_values = (0, 0, 0)
 controller.platform_stage_2()
