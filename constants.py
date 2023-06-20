@@ -10,4 +10,4 @@ MAX_DATA_SIZE = 1023
 
 DEBUG = True
 
-
+REEL_SPEED = 1
