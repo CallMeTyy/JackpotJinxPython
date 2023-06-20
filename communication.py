@@ -1,5 +1,6 @@
 import serial
 import serial.tools.list_ports
+
 import constants
 import endecoder
 
@@ -17,7 +18,6 @@ def get_port():
 
 
 def read_incoming():
-    print("reading...")
     msg = arduino.readline()[:-2]  # the last bit gets rid of the new-line chars
     if len(msg) > 0:
         if constants.DEBUG:
@@ -28,28 +28,27 @@ def read_incoming():
 
 
 def send_outgoing(msg):
-    # if constants.DEBUG:
-    #     print(msg)
     arduino.write(str.encode(msg))
 
 
 def process_data():
     while True:
         msg_in = read_incoming()
-        msg_out = encode_decode(msg_in)
-        if len(msg_out) > 0:
-            send_outgoing(msg_out)
+        endecoder.decode(msg_in)
+        process_loop()
 
 
-def encode_decode(msg):
-    # return "pong"
-    return endecoder.Encode(endecoder.Decode(msg))
+def process_loop():
+    pass
 
 
-#initialisiation
-port = get_port()
-baud_rate = constants.BAUD_RATE
-arduino = serial.Serial(port=port, baudrate=baud_rate, timeout=0)
+# initialisiation
+if constants.SIMULATED_SERIAL:
+    print("Serial now simulated")
+else:
+    port = get_port()
+    baud_rate = constants.BAUD_RATE
+    arduino = serial.Serial(port=port, baudrate=baud_rate, timeout=0)
 
 send_outgoing("hello!")
 read_incoming()
