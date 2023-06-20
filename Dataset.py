@@ -1,7 +1,4 @@
-import simpleaudio as Audio
 from pandas import DataFrame
-from pydub import AudioSegment
-from pydub.playback import _play_with_simpleaudio as play
 from pathlib import Path
 import re
 
@@ -16,7 +13,7 @@ print(dataAustralia)
 data = (dataBritain,dataNevada,dataMacau,dataAustralia)
 
 
-def FetchData(input):
+def fetchData(input):
     if(re.fullmatch("[0-9],[0-9],[0-9]", str(input))):
         input = tuple(int(x)for x in input.split(","))
         if(input[0] >= len(data)):
@@ -31,71 +28,6 @@ def FetchData(input):
     else:
         print("Input not accepted, it should be in the form of int,int,int")
 
-hasPlayed = False;
-Congratulations = AudioSegment.from_wav("Audio/Standard/Congratulations.wav")
 
 
-def GetCountryWav(input):
-    if(input == 0):
-        return AudioSegment.from_wav("Audio/Countries/Britain.wav")
-    elif(input == 1):
-        return AudioSegment.from_wav("Audio/Countries/Nevada.wav")
-    elif(input == 2):
-        return AudioSegment.from_wav("Audio/Countries/Macau.wav")
-    elif(input == 3):
-        return AudioSegment.from_wav("Audio/Countries/Australia.wav")
-    return
 
-def GetGameWav(input):
-    if(input == 0):
-        return AudioSegment.from_wav("Audio/Games/Casinos.wav")
-    elif(input == 1):
-        return AudioSegment.from_wav("Audio/Games/Bingo.wav")
-    elif(input == 2):
-        return AudioSegment.from_wav("Audio/Games/Lotteries.wav")
-    elif(input == 3):
-        return AudioSegment.from_wav("Audio/Games/Sportsbetting.wav")
-    return
-
-def GetYearWav(input):
-    if(input == 0):
-        return AudioSegment.from_wav("Audio/Years/2015.wav")
-    elif(input == 1):
-        return AudioSegment.from_wav("Audio/Years/2016.wav")
-    elif(input == 2):
-        return AudioSegment.from_wav("Audio/Years/2017.wav")
-    elif(input == 3):
-        return AudioSegment.from_wav("Audio/Years/2018.wav")
-    elif(input == 4):
-        return AudioSegment.from_wav("Audio/Years/2019.wav")
-    elif(input == 5):
-        return AudioSegment.from_wav("Audio/Years/2020.wav")
-    elif(input == 6):
-        return AudioSegment.from_wav("Audio/Years/2021.wav")
-    return
-
-def GetDataWav(input):
-    path = "Audio/Data/" + str(input[0]) + str(input[1]) + str(input[2]) + ".wav"
-    if(Path(path).is_file()):
-        return AudioSegment.from_wav(path)
-    else:
-       return "Not Found"
-
-def PlayVoice(inputs):
-    if(re.fullmatch("[0-9],[0-9],[0-9]", str(inputs))):
-        input = tuple(int(x)for x in inputs.split(","))
-        if(input[0] >= len(data)):
-            print("Country not in dataset...")
-        elif(input[1] >= len(data)):
-            print("Game not found in dataset...")
-        else:
-            money = str(FetchData(inputs))
-            print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + money)
-            if (money is "N/A"):
-                clip = GetDataWav(input)
-                playing = play(clip)
-            else:
-                clip = Congratulations + GetDataWav(input) + GetCountryWav(input[0]) + GetGameWav(input[1]) + GetYearWav(input[2])
-                playing = play(clip)
-    else:
-        print("Input not accepted, it should be in the form of int,int,int")
