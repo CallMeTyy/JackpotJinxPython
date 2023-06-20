@@ -26,6 +26,7 @@ class Controller:
             self.platform_sequence(money_lost)
             pass
 
+    # this method should be called when a button is pressed, stopping the reel and requesting the data from the reel.
     def stop_button_pressed(self, reel_num):
         if self.reels_spinning:
             self.send(endecoder.encode_reel_stop(reel_num))
@@ -53,7 +54,9 @@ class Controller:
     def platform_sequence(self, money_lost):
         # stage 1: starts immediately
         self.platform_stage_1(money_lost)
-        # stage 2: waits until platform is raised (we might not get a signal for this, so we might have to estimate the time)
+        # stage 2: waits until platform is raised (
+        # we might not get a signal for this, so we might have to estimate the time)
+        # We could also go until winning tune is done
         self.platform_stage_2(money_lost)
         # stage 3: waits until voice is finished.
         self.platform_stage_3()
@@ -71,8 +74,8 @@ class Controller:
     def platform_stage_2(self, money_lost):
         self.send(endecoder.encode_light_height(money_lost))
         vals = "" + str(self.reel_values[0]) + "," + str(self.reel_values[1]) + "," + str(self.reel_values[2])
-        Dataset.PlayVoice(vals)
-        # Dataset.PlayVoice((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
+        # Dataset.PlayVoice(vals)
+        Dataset.PlayVoice((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
         pass
 
     def platform_stage_3(self):
