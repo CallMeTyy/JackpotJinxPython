@@ -8,6 +8,9 @@ def encode_platform_height(money):
     height = round(outmin + (((money - mmin) / (mmax - mmin)) * (outmax - outmin)))
     return f"PLAPOS{min(max(height,0),outmax)}"
 
+def encode_platform_stop():
+    return "PLASTP"
+
 def encode_light_pattern(money):
     outmin = constants.LED_MINHEIGHT
     outmax = constants.LED_MAXHEIGHT
