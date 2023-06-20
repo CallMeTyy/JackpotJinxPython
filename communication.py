@@ -19,12 +19,13 @@ def get_port():
 
 def read_incoming():
     msg = arduino.readline()[:-2]  # the last bit gets rid of the new-line chars
-    if len(msg) > 0:
-        if constants.DEBUG:
-            data_str = str(msg)[2:-1]
-            print(data_str)
-            return data_str
-    return msg
+    data_str = str(msg)[2:-1]
+    if len(data_str) > 0:
+        data_str = str(msg)[2:-1]
+        # if constants.DEBUG:
+        #     print(data_str)
+        return data_str
+    return data_str
 
 
 def send_outgoing(msg):
@@ -32,9 +33,17 @@ def send_outgoing(msg):
 
 
 def process_data():
+    msg = ""
     while True:
         msg_in = read_incoming()
-        endecoder.decode(msg_in)
+        msg += str(msg_in)
+        if len(msg_in) > 0:
+            word_end_pos = msg.find("\n")
+            command = msg[:word_end_pos+1]
+            msg = msg[word_end_pos+1:]
+            print(command)
+            print(msg)
+            endecoder.decode(command)
         process_loop()
 
 
