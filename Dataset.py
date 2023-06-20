@@ -66,29 +66,27 @@ def GetYearWav(input):
     return
 
 def GetDataWav(input):
-    path = "Audio/Data/" + str(a[0]) + str(a[1]) + str(a[2]) + ".wav"
+    path = "Audio/Data/" + str(input[0]) + str(input[1]) + str(input[2]) + ".wav"
     if(Path(path).is_file()):
         return AudioSegment.from_wav(path)
     else:
        return "Not Found"
 
-while(True):
-    a=input ('What Country, Game and year to retrieve? : ') 
-    
-    if(re.fullmatch("[0-9],[0-9],[0-9]", a) != None):
-        a = tuple(int(x)for x in a.split(","))
-        if(a[0] >= len(data)):
+def PlayVoice(input):
+    if(re.fullmatch("[0-9],[0-9],[0-9]", input) != None):
+        input = tuple(int(x)for x in input.split(","))
+        if(input[0] >= len(data)):
             print("Country not in dataset...")
-        elif(a[1] >= len(data)):
+        elif(input[1] >= len(data)):
             print("Game not found in dataset...")
         else:
-            money = str(FetchData(a))
-            print("The value for country " + str(a[0]) +  ", column " + str(a[1]) +", row " + str(a[2]) + ", is: " + money)
+            money = str(FetchData(input))
+            print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + money)
             if (money is "N/A"):
-                clip = GetDataWav(a)
+                clip = GetDataWav(input)
                 playing = play(clip)
             else:
-                clip = Congratulations + GetDataWav(a) + GetCountryWav(a[0]) + GetGameWav(a[1]) + GetYearWav(a[2])
+                clip = Congratulations + GetDataWav(input) + GetCountryWav(input[0]) + GetGameWav(input[1]) + GetYearWav(input[2])
                 playing = play(clip)
     else:
         print("Input not accepted, it should be in the form of int,int,int")
