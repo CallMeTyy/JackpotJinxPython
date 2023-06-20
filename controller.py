@@ -120,10 +120,10 @@ class Controller:
         return self.calibration_done and not self.error_state
 
     def send(self, msg):
-        communication.send_outgoing(msg)
+        communication.send_outgoing(msg, self)
 
 
-# testing stuff
-controller = Controller()
-controller.reel_values = (0, 0, 0)
-controller.platform_stage_2()
+# # testing stuff
+# controller = Controller()
+# controller.reel_values = [0, 0, 0]
+# controller.platform_stage_2()
