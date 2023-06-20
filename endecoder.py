@@ -1,19 +1,4 @@
 import constants
-import re
-
-
-
-def Decode(inputData):
-    """Docodes the data into a tuple. {string inputData}"""
-    decodedData = tuple()
-    # Decode the data into a tuple to be used to call several functions and retrieve data from the input table
-    return decodedData
-
-def Encode(processedData):
-    """Encodes the data required back into a string. {int dataType}"""
-    encodedData = ""
-    # Encode the processed data into a simple protocol to send back to the arduino
-    return encodedData
 
 def encode_platform_height(money):
     outmin = constants.PLATFORM_MINHEIGHT
@@ -56,11 +41,12 @@ def encode_sys_stop():
     return "SYSSTP"
 
 
-def decode_header(input):
+def decode(input):
     """ checks what the header of the message is. After that, goes to specific decoder for the rest"""
-    head = input[:constants.HEADER_LENGTH]   
+    header = input[:constants.HEADER_LENGTH]   
     tail = input[constants.TAIL_LENGTH:]
-    match head:
+    
+    match header:
         case "LE":
             _decode_lever(input, tail)            
         case "BT":
