@@ -15,15 +15,24 @@ dataAustralia = DataFrame([[627.86,13.73,77.74,146.14],[600.11,13.87,71.02,155.1
 print(dataAustralia)
 data = (dataBritain,dataNevada,dataMacau,dataAustralia)
 
+
 def FetchData(input):
-    country = data[input[0]]
-    game = country[input[1]]
-    year = game[input[2]]
-    return year
+    if(re.fullmatch("[0-9],[0-9],[0-9]", str(input))):
+        input = tuple(int(x)for x in input.split(","))
+        if(input[0] >= len(data)):
+            print("Country not in dataset...")
+        elif(input[1] >= len(data)):
+            print("Game not found in dataset...")
+        else:
+            country = data[input[0]]
+            game = country[input[1]]
+            year = game[input[2]]
+            return year
+    else:
+        print("Input not accepted, it should be in the form of int,int,int")
 
 hasPlayed = False;
 Congratulations = AudioSegment.from_wav("Audio/Standard/Congratulations.wav")
-
 
 
 def GetCountryWav(input):
@@ -72,15 +81,15 @@ def GetDataWav(input):
     else:
        return "Not Found"
 
-def PlayVoice(input):
-    if(re.fullmatch("[0-9],[0-9],[0-9]", input) != None):
-        input = tuple(int(x)for x in input.split(","))
+def PlayVoice(inputs):
+    if(re.fullmatch("[0-9],[0-9],[0-9]", str(inputs))):
+        input = tuple(int(x)for x in inputs.split(","))
         if(input[0] >= len(data)):
             print("Country not in dataset...")
         elif(input[1] >= len(data)):
             print("Game not found in dataset...")
         else:
-            money = str(FetchData(input))
+            money = str(FetchData(inputs))
             print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + money)
             if (money is "N/A"):
                 clip = GetDataWav(input)
