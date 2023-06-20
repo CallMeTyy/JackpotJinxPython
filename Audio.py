@@ -5,11 +5,11 @@ from pathlib import Path
 import re
 import Dataset
 
-playingLoops = []
+playingLoops = {}
 
 Congratulations = AudioSegment.from_wav("Audio/Standard/Congratulations.wav")
 
-music = simpleaudio.from_wave_file("Audio/Standard/Congratulations.wav")
+music = simpleaudio.WaveObject.from_wave_file("Audio/Standard/Congratulations.wav")
 
 def _getCountryWav(input):
     if(input == 0):
@@ -85,21 +85,22 @@ def playOneShot(path):
         print("Sound: " + path + " Not found")
 
 def playLoop(index):
-    if( index in playingLoops):
-        playingLoops.append(index)
-        print("Playing loop " + str(index))
+        if(index == 0):
+            if(0 not in playingLoops):
+                playingLoops[index] = music.play()
+                print("Playing loop " + str(index))
 
 
 def stopLoop(index):
-    if(index not in playingLoops):
-        playingLoops.remove(index)
+    if(index in playingLoops):
+        playingLoops.pop(index)
         print("Stopping loop " + str(index))
 
 def handleLoops():
-    for indices in playingLoops:
-        if(indices == 0):
-            if not music.is_playing():
-                music.play()
+    for entries in playingLoops:
+        if(entries == 0):
+            if not playingLoops[entries].is_playing():
+                playingLoops[entries] = music.play()
 
 
     
