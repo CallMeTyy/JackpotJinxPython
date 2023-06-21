@@ -57,22 +57,16 @@ def _getDataWav(input):
     else:
        return "Not Found"
 
-def playVoice(inputs):
-    if(re.fullmatch("[0-9],[0-9],[0-9]", str(inputs))):
-        input = tuple(int(x)for x in inputs.split(","))
-        if(input[0] >= len(data)):
-            print("Country not in dataset...")
-        elif(input[1] >= len(data)):
-            print("Game not found in dataset...")
+def playVoice(input : tuple):
+    if(re.fullmatch("\([0-9], [0-9], [0-9]\)", str(input))):
+        money = str(Dataset.fetchData(input))
+        print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + money)
+        if (money is "N/A"):
+            clip = _getDataWav(input)
+            playing = play(clip)
         else:
-            money = str(Dataset.fetchData(inputs))
-            print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + money)
-            if (money is "N/A"):
-                clip = _getDataWav(input)
-                playing = play(clip)
-            else:
-                clip = Congratulations + _getDataWav(input) + _getCountryWav(input[0]) + _getGameWav(input[1]) + _getYearWav(input[2])
-                playing = play(clip)
+            clip = Congratulations + _getDataWav(input) + _getCountryWav(input[0]) + _getGameWav(input[1]) + _getYearWav(input[2])
+            playing = play(clip)
     else:
         print("Input not accepted, it should be in the form of int,int,int")
 

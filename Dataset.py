@@ -13,10 +13,9 @@ dataAustralia = DataFrame([[627.86,13.73,77.74,146.14],[600.11,13.87,71.02,155.1
 data = (dataBritain,dataNevada,dataMacau,dataAustralia)
 
 
-def fetchData(input):
+def fetchData(input : tuple):
     print("final reel values = " + str(input))
-    if(re.fullmatch("([0-9], [0-9], [0-9])", str(input))):
-        input = tuple(int(x)for x in input.split(","))
+    if(re.fullmatch("\([0-9], [0-9], [0-9]\)", str(input))):
         if(input[0] >= len(data)):
             print("Country not in dataset...")
         elif(input[1] >= len(data)):
@@ -24,8 +23,8 @@ def fetchData(input):
         else:
             country = data[input[0]]
             game = country[input[1]]
-            year = game[input[2]]
-            return year
+            money_lost = game[input[2]]
+            return money_lost
     else:
         print("Input not accepted, it should be in the form of int,int,int")
 
