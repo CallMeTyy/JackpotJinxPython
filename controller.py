@@ -83,6 +83,7 @@ class Controller:
             self.platform_stage_3()
 
     def platform_stage_1(self, money_lost):
+        print("reached stage 1")
         self.platform_stage = 1
         # TODO play victory music
         self.send(endecoder.encode_light_pattern(constants.LED_WIN_PATTERN))

@@ -1,5 +1,5 @@
 
-DEBUG = True
+DEBUG = False
 SIMULATED_SERIAL = False
 
 ARDUINO_PORT_MAC = '/dev/cu.usbmodem142101'

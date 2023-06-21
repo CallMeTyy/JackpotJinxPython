@@ -56,7 +56,7 @@ class Communication:
     def initialise(self, baudrate):
         port = self.get_port()
         baud_rate = constants.BAUD_RATE
-        arduino = serial.Serial(port=port, baudrate=baud_rate, timeout=0)
+        arduino = serial.Serial(port=port, baudrate=baud_rate, timeout=1)
         return arduino
 
 

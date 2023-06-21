@@ -17,7 +17,7 @@ def process_loop(com, ardui, contr):
 
 comm = communication.Communication()
 arduino = comm.initialise(constants.BAUD_RATE)
-arduino_with_io = io.TextIOWrapper(io.BufferedRWPair(arduino, arduino))
+# arduino_with_io = io.TextIOWrapper(io.BufferedRWPair(arduino, arduino))
 controller = controller.Controller(arduino, comm)
 process_loop(comm, arduino, controller)
 
