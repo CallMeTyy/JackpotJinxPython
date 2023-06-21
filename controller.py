@@ -2,6 +2,7 @@ import communication
 import constants
 import Dataset
 import endecoder
+import Audio
 
 
 class Controller:
@@ -75,7 +76,7 @@ class Controller:
         self.send(endecoder.encode_light_height(money_lost))
         vals = "" + str(self.reel_values[0]) + "," + str(self.reel_values[1]) + "," + str(self.reel_values[2])
         # Dataset.PlayVoice(vals)
-        Dataset.PlayVoice((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
+        Audio.playVoice((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
         pass
 
     def platform_stage_3(self):
