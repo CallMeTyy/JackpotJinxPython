@@ -69,26 +69,22 @@ class Controller:
         # stage 4: when platform is fully lowered again
         self.platform_stage_4()
         # sequence is reset to the start.
-        pass
 
     def platform_stage_1(self, money_lost):
         # TODO play victory music
         self.send(endecoder.encode_light_pattern(constants.LED_WIN_PATTERN))
         self.send(endecoder.encode_platform_height(money_lost))
-        pass
 
     def platform_stage_2(self, money_lost):
         self.send(endecoder.encode_light_height(money_lost))
         vals = "" + str(self.reel_values[0]) + "," + str(self.reel_values[1]) + "," + str(self.reel_values[2])
         # Dataset.PlayVoice(vals)
         Audio.playVoice((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
-        pass
 
     def platform_stage_3(self):
         # TODO shredding sounds start
         self.send(endecoder.encode_platform_height(0))
         self.send(endecoder.encode_fan_start())
-        pass
 
     def platform_stage_4(self):
         self.send(endecoder.encode_fan_stop())
@@ -101,17 +97,14 @@ class Controller:
             reel = -1
         self.installation_active = False
         self.send(endecoder.encode_light_pattern(constants.LED_IDLE_PATTERN))
-        pass
 
     # if the installation notices a problem in the hardware this method will stop it in its tracks and try to recover
     def external_error(self):
         self.error_state = True
-        pass
 
     # this should reset the installation to its starting position and recalibrate the reels.
     def reset_installation(self):
         self.calibration_done = False
-        pass
 
     # emergency stop should stop all moving parts.
     def emergency_stop(self):
@@ -120,16 +113,12 @@ class Controller:
         self.send(endecoder.encode_fan_stop())
         for i in range(0, 3):
             self.send(endecoder.encode_reel_stop(i))
-        pass
 
     def all_good(self):
         return self.calibration_done and not self.error_state
 
     def send(self, msg):
         self.comm.send_outgoing(msg, self.arduino)
-
-    def process_loop(self):
-        pass
 
 
 # # testing stuff
