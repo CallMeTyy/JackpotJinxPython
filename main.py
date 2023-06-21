@@ -8,7 +8,7 @@ def process_loop(arduino, controller):
     while True:
         msg = communication.read_incoming(arduino)
         if len(msg) > 0:
-            endecoder.decode(msg)
+            endecoder.decode(msg, controller)
 
 
 arduino = communication.initialise(constants.BAUD_RATE)
