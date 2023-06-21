@@ -31,3 +31,13 @@ COUNTRY_AMOUNT = 4
 GAME_AMOUNT = 4
 YEAR_AMOUNT = 6
 IMAGE_POSITION_FRACTION = 0.5   # this is where the image is in the angular range of the value on the reel
+# Audio Constants
+
+AUDIO_MUSIC = 0
+AUDIO_RLOOP1 = 1
+AUDIO_RLOOP2 = 2
+AUDIO_RLOOP3 = 3
+AUDIO_RSTP1 = 4
+AUDIO_RSTP2 = 5
+AUDIO_RSTP3 = 6
+AUDIO_SHRED = 7

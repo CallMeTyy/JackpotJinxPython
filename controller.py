@@ -20,6 +20,7 @@ class Controller:
 
     def calibration_finished(self):
         self.calibration_done = True
+        Audio.play_sfx_loop(0)
 
     def reel_stopped(self, reel_num, reel_val):
         self.reel_values[reel_num] = reel_val
@@ -39,6 +40,9 @@ class Controller:
             self.send(endecoder.encode_button_light_off(reel_num))
             # TODO stop playing reel spinning sound
             # TODO play reel stopped sound
+            print("Playing Stop")
+            Audio.play_vfx_once(3+reel_num)
+            Audio.stop_sfx_loop(reel_num)
             pass
 
     def lever_pulled(self):
@@ -46,15 +50,15 @@ class Controller:
         if not self.installation_active:
             self.installation_active = True
             self.reels_spinning = True
-            # TODO stop playing idle music
+            Audio.stop_sfx_loop(constants.AUDIO_MUSIC)
             for i in range(0, 3):
                 self.start_reel_spin(i+1)
-            # TODO start playing reel spinning music
             self.send(endecoder.encode_light_pattern(constants.LED_SPIN_PATTERN))
             pass
 
     def start_reel_spin(self, reel_num):
         # TODO play reel spinning sound
+        Audio.play_sfx_loop(reel_num)
         # print(endecoder.encode_reel_setv(reel_num, constants.REEL_SPEED))
         self.send(endecoder.encode_reel_setv(reel_num, constants.REEL_SPEED))
         self.send(endecoder.encode_button_light_on(reel_num))
@@ -96,6 +100,7 @@ class Controller:
 
     def platform_stage_3(self):
         # TODO shredding sounds start
+        Audio.play_vfx_once(constants.AUDIO_SHRED)
         self.send(endecoder.encode_platform_height(0))
         self.send(endecoder.encode_fan_start())
 

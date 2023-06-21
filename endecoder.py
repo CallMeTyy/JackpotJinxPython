@@ -75,7 +75,7 @@ def decode(input: str, controller):
                 controller.lever_pulled()         
         case "BT":
             b = __decode_button(input, tail)
-            controller.stop_button_pressed(b)
+            controller.stop_button_pressed(int(b))
         case "RL":
             rl = __decode_reel(input, tail)
             # if constants.DEBUG:
