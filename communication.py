@@ -35,18 +35,9 @@ class Communication:
         return data_str
 
     def send_outgoing(self, msg, arduino):
-        # self.send_buffer.append(msg)
         if constants.DEBUG:
             print("out:" + msg)
-        # arduino.writelines(str.encode(msg))
         arduino.write(str.encode(msg + '\n'))
-
-    def process_buffer(self, arduino):
-        if len(self.send_buffer) > 0 and time.process_time() > self.delay:
-            msg = self.send_buffer.popleft()
-            print(str(self.send_buffer) + msg)
-            # arduino.writelines(str.encode(msg))
-            self.delay = time.process_time() + constants.LOCAL_SEND_DELAY
 
     def process_data(self, arduino):
         msg = ""
