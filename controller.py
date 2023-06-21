@@ -46,7 +46,6 @@ class Controller:
             pass
 
     def lever_pulled(self):
-        print(self.installation_active)
         if not self.installation_active:
             self.installation_active = True
             self.reels_spinning = True

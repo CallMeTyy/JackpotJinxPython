@@ -14,6 +14,7 @@ def process_loop(com, ardui, contr):
             # if constants.DEBUG:
             #     print(msg)
             endecoder.decode(msg, contr)
+        Audio.handleLoops()
 
 
 comm = communication.Communication()

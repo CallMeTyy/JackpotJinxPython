@@ -89,14 +89,14 @@ def decode(input: str, controller):
 
 def __decode_lever(input: str, tail: str):
     """Specific decoder for the lever"""
-    if constants.DEBUG:
+    if constants.COMM_DEBUG:
         print(f"LEV {tail}")
     return tail == "P"
 
 def __decode_button(input: str, tail: str):
     """Specific decoder for the button"""
     headerdata = input[:constants.HEADER_LENGTH][2:]
-    if constants.DEBUG:
+    if constants.COMM_DEBUG:
         print(f"BT{headerdata} {tail}")
     return headerdata
 
@@ -111,14 +111,14 @@ def __decode_reel(input: str, tail: str):
             angle = round(angle/90)  
         case 3:
             angle = round(angle/(360/7))  
-    if constants.DEBUG:
+    if constants.COMM_DEBUG:
         print(f"RL{headerdata} {tail}")
     return (int(headerdata), int(angle))
 
 
 def __decode_sys(input: str, tail: str, controller):
     """Specific decoder for the system"""
-    if constants.DEBUG:
+    if constants.COMM_DEBUG:
         print(f"Sys {tail}")
     match tail:
         case "READY":
@@ -129,7 +129,7 @@ def __decode_sys(input: str, tail: str, controller):
 
 def __decode_platform(input, tail, controller):
     """specific decoder for platform"""
-    if constants.DEBUG:
+    if constants.COMM_DEBUG:
         print(f"Pla {tail}")
     match tail:
         case "DON":

@@ -29,13 +29,13 @@ class Communication:
         if len(data_str) > 0:
             # data_str = str(msg)[2:-1]
             data_str = data_str[:-4]
-            if constants.DEBUG:
+            if constants.COMM_DEBUG:
                 print("in:" + data_str)
             return data_str
         return data_str
 
     def send_outgoing(self, msg, arduino):
-        if constants.DEBUG:
+        if constants.COMM_DEBUG:
             print("out:" + msg)
         arduino.write(str.encode(msg + '\n'))
 
