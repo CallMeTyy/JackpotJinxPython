@@ -1,4 +1,5 @@
 import constants
+#from controller import Controller
 
 def encode_platform_height(money):
     outmin = constants.PLATFORM_MINHEIGHT
@@ -7,6 +8,9 @@ def encode_platform_height(money):
     mmax = constants.MAX_MONEY
     height = round(outmin + (((money - mmin) / (mmax - mmin)) * (outmax - outmin)))
     return f"PLAPOS{min(max(height,0),outmax)}"
+
+def encode_platform_stop():
+    return "PLASTP"
 
 def encode_light_pattern(money):
     outmin = constants.LED_MINHEIGHT
@@ -41,37 +45,59 @@ def encode_sys_stop():
     return "SYSSTP"
 
 
-def decode(input):
+def decode(input: str, controller):
     """ checks what the header of the message is. After that, goes to specific decoder for the rest"""
+    input = input.capitalize
     header = input[:constants.HEADER_LENGTH]   
     tail = input[constants.TAIL_LENGTH:]
     
     match header:
         case "LE":
-            _decode_lever(input, tail)            
+            p = __decode_lever(input, tail)   
+            if p:
+                controller.lever_pulled()         
         case "BT":
-            _decode_button(input, tail)
+            b = __decode_button(input, tail)
+            controller.stop_button_pressed(b)
         case "RL":
-            _decode_reel(input, tail)
+            rl = __decode_reel(input, tail)
+            print(f"{rl}  {rl[0]}")
+            controller.reel_stopped(rl[0],rl[1])
         case "SY":
-            _decode_sys(input, tail)      
+            __decode_sys(input, tail)      
         
 
-def _decode_lever(input, tail):
+def __decode_lever(input: str, tail: str):
     """Specific decoder for the lever"""
-    print(f"LEV {tail}")
+    if constants.DEBUG:
+        print(f"LEV {tail}")
+    return tail == "p"
 
-def _decode_button(input, tail):
+def __decode_button(input: str, tail: str):
     """Specific decoder for the button"""
     headerdata = input[:constants.HEADER_LENGTH+1][2:]
-    print(f"BT{headerdata} {tail}")
+    if constants.DEBUG:
+        print(f"BT{headerdata} {tail}")
+    return headerdata
 
-def _decode_reel(input, tail):
+def __decode_reel(input: str, tail: str):
     """Specific decoder for the reel"""
-    headerdata = input[:constants.HEADER_LENGTH+1][2:]
-    print(f"RL{headerdata} {tail}")
+    headerdata = int(input[:constants.HEADER_LENGTH+1][2:])
+    angle = float(tail[3:])
+    match headerdata:
+        case 0:
+            angle = round(angle/90)
+        case 1:
+            angle = round(angle/90)  
+        case 2:
+            angle = round(angle/(360/7))  
+    if constants.DEBUG:
+        print(f"RL{headerdata} {tail}")
+    return (int(headerdata), int(angle))
 
-def _decode_sys(input, tail):
+def __decode_sys(input: str, tail: str):
     """Specific decoder for the system"""
-    print(f"Sys {tail}")
+    if constants.DEBUG:
+        print(f"Sys {tail}")
+
 
