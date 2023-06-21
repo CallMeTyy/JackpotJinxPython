@@ -16,6 +16,7 @@ class Controller:
         self.calibration_done = False
         self.arduino = arduino
         self.comm = serial_com
+        self.platform_stage = 0
 
     def calibration_finished(self):
         self.calibration_done = True
@@ -23,18 +24,19 @@ class Controller:
     def reel_stopped(self, reel_num, reel_val):
         self.reel_values[reel_num] = reel_val
         self.reels_stopped[reel_num] = True
+        self.send(endecoder.encode_reel_stop(reel_num, reel_val))
         print("reels: " + str(self.reel_values))
         if not (False in self.reels_stopped):
             self.reels_spinning = False
             money_lost = Dataset.fetchData((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
-            self.platform_sequence(money_lost)
+            self.start_platform_sequence(money_lost)
             pass
 
     # this method should be called when a button is pressed, stopping the reel and requesting the data from the reel.
     def stop_button_pressed(self, reel_num):
         if self.reels_spinning:
-            self.send(endecoder.encode_reel_stop(reel_num))
             self.send(endecoder.encode_reel_requestangle(reel_num))
+            self.send(endecoder.encode_button_light_off(reel_num))
             # TODO stop playing reel spinning sound
             # TODO play reel stopped sound
             pass
@@ -55,30 +57,40 @@ class Controller:
         # TODO play reel spinning sound
         # print(endecoder.encode_reel_setv(reel_num, constants.REEL_SPEED))
         self.send(endecoder.encode_reel_setv(reel_num, constants.REEL_SPEED))
-        pass
+        self.send(endecoder.encode_button_light_on(reel_num))
 
-    def platform_sequence(self, money_lost):
+    def start_platform_sequence(self, money_lost):
         # stage 1: starts immediately
         self.platform_stage_1(money_lost)
-        # stage 2: waits until platform is raised (
+        # stage 2: waits until platform is raised (called by platform done decoding)
         # we might not get a signal for this, so we might have to estimate the time)
         # We could also go until winning tune is done
-        self.platform_stage_2(money_lost)
         # stage 3: waits until voice is finished.
-        self.platform_stage_3()
+        # self.platform_stage_3()
         # stage 4: when platform is fully lowered again
-        self.platform_stage_4()
+        # self.platform_stage_4()
         # sequence is reset to the start.
 
+    def platform_done(self):
+        match self.platform_stage:
+            case 1:
+                self.platform_stage_2()
+            case 3:
+                self.platform_stage_4()
+
+    def sound_done(self):
+        if self.platform_stage == 2:
+            self.platform_stage_3()
+
     def platform_stage_1(self, money_lost):
+        self.platform_stage = 1
         # TODO play victory music
         self.send(endecoder.encode_light_pattern(constants.LED_WIN_PATTERN))
         self.send(endecoder.encode_platform_height(money_lost))
-
-    def platform_stage_2(self, money_lost):
         self.send(endecoder.encode_light_height(money_lost))
+
+    def platform_stage_2(self):
         vals = "" + str(self.reel_values[0]) + "," + str(self.reel_values[1]) + "," + str(self.reel_values[2])
-        # Dataset.PlayVoice(vals)
         Audio.playVoice((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
 
     def platform_stage_3(self):
@@ -97,6 +109,7 @@ class Controller:
             reel = -1
         self.installation_active = False
         self.send(endecoder.encode_light_pattern(constants.LED_IDLE_PATTERN))
+        self.platform_stage = 0
 
     # if the installation notices a problem in the hardware this method will stop it in its tracks and try to recover
     def external_error(self):
@@ -105,14 +118,12 @@ class Controller:
     # this should reset the installation to its starting position and recalibrate the reels.
     def reset_installation(self):
         self.calibration_done = False
+        self.send(endecoder.encode_sys_recalibrate())
 
     # emergency stop should stop all moving parts.
     def emergency_stop(self):
         self.error_state = True
-        self.send(endecoder.encode_platform_stop())
-        self.send(endecoder.encode_fan_stop())
-        for i in range(0, 3):
-            self.send(endecoder.encode_reel_stop(i))
+        self.send(endecoder.encode_sys_stop())
 
     def all_good(self):
         return self.calibration_done and not self.error_state

@@ -23,8 +23,23 @@ def encode_light_pattern(money):
 def encode_light_height(decIndex):
     return f"LE2PAT{decIndex}"
 
-def encode_reel_stop(reel):
-    return f"RL{reel}STP"
+def encode_button_light_on(reel):
+    return f"BT{reel}ONN"
+
+def encode_button_light_off(reel):
+    return f"BT{reel}OFF"
+
+def encode_reel_stop(reel, val):
+    part = 1
+    match reel:
+        case 1:
+            part = (360/constants.COUNTRY_AMOUNT)
+        case 2:
+            part = (360/constants.GAME_AMOUNT)
+        case 3:
+            part = (360/constants.YEAR_AMOUNT)
+    angle = round(val * part + part * constants.IMAGE_POSITION_FRACTION)
+    return f"RL{reel}STP{angle}"
 
 def encode_reel_setv(reel,velocity):
     return f"RL{reel}VEL{velocity}"
@@ -43,6 +58,8 @@ def encode_sys_recalibrate():
 
 def encode_sys_stop():
     return "SYSSTP"
+
+
 
 
 def decode(input: str, controller):
@@ -66,6 +83,8 @@ def decode(input: str, controller):
             controller.reel_stopped(rl[0]-1, rl[1])
         case "SY":
             __decode_sys(input, tail, controller)
+        case "PL":
+            __decode_platform(input, tail, controller)
         
 
 def __decode_lever(input: str, tail: str):
@@ -106,5 +125,14 @@ def __decode_sys(input: str, tail: str, controller):
             controller.calibration_finished()
         case "ERR":
             controller.external_error()
+
+
+def __decode_platform(input, tail, controller):
+    """specific decoder for platform"""
+    if constants.DEBUG:
+        print(f"Pla {tail}")
+    match tail:
+        case "DON":
+            controller.platform_done()
 
 
