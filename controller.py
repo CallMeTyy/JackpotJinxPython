@@ -120,7 +120,10 @@ class Controller:
         return self.calibration_done and not self.error_state
 
     def send(self, msg):
-        communication.send_outgoing(msg, self)
+        communication.send_outgoing(msg)
+
+    def process_loop(self):
+        pass
 
 
 # # testing stuff
