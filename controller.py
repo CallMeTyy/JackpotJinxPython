@@ -57,6 +57,7 @@ class Controller:
 
     def start_reel_spin(self, reel_num):
         # TODO play reel spinning sound
+        # print("Reel " + str(reel_num) + " spinning!")
         Audio.play_sfx_loop(reel_num)
         # print(endecoder.encode_reel_setv(reel_num, constants.REEL_SPEED))
         self.send(endecoder.encode_reel_setv(reel_num, constants.REEL_SPEED))
