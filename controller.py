@@ -22,7 +22,7 @@ class Controller:
         self.reels_stopped[reel_num] = True
         if not (False in self.reels_stopped):
             self.reels_spinning = False
-            money_lost = Dataset.FetchData((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
+            money_lost = Dataset.fetchData((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
             self.platform_sequence(money_lost)
             pass
 

@@ -4,11 +4,11 @@ import controller
 import endecoder
 
 
-def process_loop(arduino, controller):
+def process_loop(ardui, contr):
     while True:
-        msg = communication.read_incoming(arduino)
+        msg = communication.read_incoming(ardui)
         if len(msg) > 0:
-            endecoder.decode(msg, controller)
+            endecoder.decode(msg, contr)
 
 
 arduino = communication.initialise(constants.BAUD_RATE)
