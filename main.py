@@ -1,20 +1,25 @@
+import io
+
 import communication
 import constants
 import controller
 import endecoder
 
 
-def process_loop(ardui, contr):
+def process_loop(com, ardui, contr):
     while True:
-        msg = communication.read_incoming(ardui)
+        msg = com.read_incoming(ardui)
         if len(msg) > 0:
-            if constants.DEBUG:
-                print(msg)
+            # if constants.DEBUG:
+            #     print(msg)
             endecoder.decode(msg, contr)
+        com.process_buffer(ardui)
 
 
-arduino = communication.initialise(constants.BAUD_RATE)
-controller = controller.Controller()
-process_loop(arduino, controller)
+comm = communication.Communication()
+arduino = comm.initialise(constants.BAUD_RATE)
+arduino_with_io = io.TextIOWrapper(io.BufferedRWPair(arduino, arduino))
+controller = controller.Controller(arduino, comm)
+process_loop(comm, arduino, controller)
 
 

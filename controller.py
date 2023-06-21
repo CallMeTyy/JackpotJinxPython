@@ -7,13 +7,15 @@ import Audio
 
 class Controller:
     # reel 0 is country, 1 is game, 2 is year
-    def __init__(self):
+    def __init__(self, arduino, serial_com):
         self.reels_stopped = [False, False, False]
         self.reel_values = [-1, -1, -1]
         self.reels_spinning = False
         self.installation_active = False
         self.error_state = False
         self.calibration_done = False
+        self.arduino = arduino
+        self.comm = serial_com
 
     def calibration_finished(self):
         self.calibration_done = True
@@ -21,6 +23,7 @@ class Controller:
     def reel_stopped(self, reel_num, reel_val):
         self.reel_values[reel_num] = reel_val
         self.reels_stopped[reel_num] = True
+        print("reels: " + str(self.reel_values))
         if not (False in self.reels_stopped):
             self.reels_spinning = False
             money_lost = Dataset.fetchData((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
@@ -37,18 +40,20 @@ class Controller:
             pass
 
     def lever_pulled(self):
+        print(self.installation_active)
         if not self.installation_active:
             self.installation_active = True
             self.reels_spinning = True
             # TODO stop playing idle music
-            for i in range(0, 2):
-                self.start_reel_spin(i)
+            for i in range(0, 3):
+                self.start_reel_spin(i+1)
             # TODO start playing reel spinning music
             self.send(endecoder.encode_light_pattern(constants.LED_SPIN_PATTERN))
             pass
 
     def start_reel_spin(self, reel_num):
         # TODO play reel spinning sound
+        # print(endecoder.encode_reel_setv(reel_num, constants.REEL_SPEED))
         self.send(endecoder.encode_reel_setv(reel_num, constants.REEL_SPEED))
         pass
 
@@ -113,7 +118,7 @@ class Controller:
         self.error_state = True
         # TODO stop platform engine
         self.send(endecoder.encode_fan_stop())
-        for i in range(0, 2):
+        for i in range(0, 3):
             self.send(endecoder.encode_reel_stop(i))
         pass
 
@@ -121,7 +126,7 @@ class Controller:
         return self.calibration_done and not self.error_state
 
     def send(self, msg):
-        communication.send_outgoing(msg)
+        self.comm.send_outgoing(msg, self.arduino)
 
     def process_loop(self):
         pass

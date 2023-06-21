@@ -51,7 +51,7 @@ def decode(input: str, controller):
     header = input[:constants.HEADER_LENGTH]   
     tail = input[constants.TAIL_LENGTH:]
     
-    match header:
+    match header[:-1]:
         case "LE":
             p = __decode_lever(input, tail)   
             if p:
@@ -61,43 +61,50 @@ def decode(input: str, controller):
             controller.stop_button_pressed(b)
         case "RL":
             rl = __decode_reel(input, tail)
-            print(f"{rl}  {rl[0]}")
-            controller.reel_stopped(rl[0],rl[1])
+            # if constants.DEBUG:
+            #     print(f"{rl}  {rl[0]}")
+            controller.reel_stopped(rl[0]-1, rl[1])
         case "SY":
-            __decode_sys(input, tail)      
+            __decode_sys(input, tail, controller)
         
 
 def __decode_lever(input: str, tail: str):
     """Specific decoder for the lever"""
     if constants.DEBUG:
         print(f"LEV {tail}")
-    return tail == "p"
+    return tail == "P"
 
 def __decode_button(input: str, tail: str):
     """Specific decoder for the button"""
-    headerdata = input[:constants.HEADER_LENGTH+1][2:]
+    headerdata = input[:constants.HEADER_LENGTH][2:]
     if constants.DEBUG:
         print(f"BT{headerdata} {tail}")
     return headerdata
 
 def __decode_reel(input: str, tail: str):
     """Specific decoder for the reel"""
-    headerdata = int(input[:constants.HEADER_LENGTH+1][2:])
-    angle = float(tail[3:])
+    headerdata = int(input[:constants.HEADER_LENGTH][2:])
+    angle = float(tail[constants.HEADER_LENGTH:])
     match headerdata:
-        case 0:
-            angle = round(angle/90)
         case 1:
-            angle = round(angle/90)  
+            angle = round(angle/90)
         case 2:
+            angle = round(angle/90)  
+        case 3:
             angle = round(angle/(360/7))  
     if constants.DEBUG:
         print(f"RL{headerdata} {tail}")
     return (int(headerdata), int(angle))
 
-def __decode_sys(input: str, tail: str):
+
+def __decode_sys(input: str, tail: str, controller):
     """Specific decoder for the system"""
     if constants.DEBUG:
         print(f"Sys {tail}")
+    match tail:
+        case "READY":
+            controller.calibration_finished()
+        case "ERR":
+            controller.external_error()
 
 

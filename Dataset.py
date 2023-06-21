@@ -14,7 +14,8 @@ data = (dataBritain,dataNevada,dataMacau,dataAustralia)
 
 
 def fetchData(input):
-    if(re.fullmatch("[0-9],[0-9],[0-9]", str(input))):
+    print("final reel values = " + str(input))
+    if(re.fullmatch("([0-9], [0-9], [0-9])", str(input))):
         input = tuple(int(x)for x in input.split(","))
         if(input[0] >= len(data)):
             print("Country not in dataset...")
