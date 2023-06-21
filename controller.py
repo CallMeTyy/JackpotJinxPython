@@ -109,7 +109,7 @@ class Controller:
     # emergency stop should stop all moving parts.
     def emergency_stop(self):
         self.error_state = True
-        # TODO stop platform engine
+        self.send(endecoder.encode_platform_stop())
         self.send(endecoder.encode_fan_stop())
         for i in range(0, 3):
             self.send(endecoder.encode_reel_stop(i))
