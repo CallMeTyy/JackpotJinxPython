@@ -2,8 +2,9 @@ import io
 
 import communication
 import constants
-import controller
+import controller as c
 import endecoder
+import Audio
 
 
 def process_loop(com, ardui, contr):
@@ -14,12 +15,13 @@ def process_loop(com, ardui, contr):
             #     print(msg)
             endecoder.decode(msg, contr)
         com.process_buffer(ardui)
+        Audio.handleLoops()
 
 
 comm = communication.Communication()
 arduino = comm.initialise(constants.BAUD_RATE)
 arduino_with_io = io.TextIOWrapper(io.BufferedRWPair(arduino, arduino))
-controller = controller.Controller(arduino, comm)
+controller = c.Controller(arduino, comm)
 process_loop(comm, arduino, controller)
 
 
