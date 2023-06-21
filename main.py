@@ -8,6 +8,8 @@ def process_loop(ardui, contr):
     while True:
         msg = communication.read_incoming(ardui)
         if len(msg) > 0:
+            if constants.DEBUG:
+                print(msg)
             endecoder.decode(msg, contr)
 
 
