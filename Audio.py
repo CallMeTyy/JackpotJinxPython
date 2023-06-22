@@ -89,9 +89,16 @@ def playVoice(input : tuple):
             playing = play(clip)
             __wait_for_sounds[0] = playing
         else:
-            clip = Congratulations + _getDataWav(input) + _getCountryWav(input[0]) + _getGameWav(input[1]) + _getYearWav(input[2])
-            playing = play(clip)
-            __wait_for_sounds[0] = playing
+            money = str(Dataset.fetchData(inputs))
+            print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + money)
+            if (money == 0.0):
+                clip = _getDataWav(input)
+                playing = play(clip)
+                __wait_for_sounds[0] = playing
+            else:
+                clip = Congratulations + _getDataWav(input) + _getCountryWav(input[0]) + _getGameWav(input[1]) + _getYearWav(input[2])
+                playing = play(clip)
+                __wait_for_sounds[0] = playing
     else:
         print("Input not accepted, it should be in the form of int,int,int")
 
@@ -151,6 +158,14 @@ def handleLoops():
     for wave,p in playingLoops.items():
         if not p.is_playing():            
             playingLoops[wave] = play(wave)
+
+def playShredder(value):
+    shredder = AudioSegment.from_wav("Audio/SFX/Shredding.wav")[:remap(value, 0.02, 1500,1,10)*1000]
+    shredder.fade_out(500)
+    return play(shredder)
+
+def remap(old_val, old_min, old_max, new_min, new_max):
+    return (new_max - new_min)*(old_val - old_min) / (old_max - old_min) + new_min
 
 
     
