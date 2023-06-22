@@ -11,6 +11,7 @@ class Controller:
         self.reels_stopped = [False, False, False]
         self.reel_values = [-1, -1, -1]
         self.reels_spinning = False
+        self.stage_1_done = [False, False]
         self.installation_active = False
         self.error_state = False
         self.calibration_done = False
@@ -30,6 +31,7 @@ class Controller:
         if not (False in self.reels_stopped):
             self.reels_spinning = False
             money_lost = Dataset.fetchData((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
+            print("money lost: " + str(money_lost))
             self.start_platform_sequence(money_lost)
             pass
 
@@ -79,31 +81,43 @@ class Controller:
             case 3:
                 self.platform_stage_4()
 
-    def sound_done(self):
-        if self.platform_stage == 2:
-            self.platform_stage_3()
+    def sound_done(self, sound_id):
+        match sound_id:
+            case 0:     # voice
+                self.platform_stage_3()
+            case 1:     # victory sound
+                self.platform_stage_2()
 
     def platform_stage_1(self, money_lost):
-        print("reached stage 1")
-        self.platform_stage = 1
-        # TODO play victory music
-        self.send(endecoder.encode_light_pattern(constants.LED_WIN_PATTERN))
-        self.send(endecoder.encode_platform_height(money_lost))
-        self.send(endecoder.encode_light_height(money_lost))
+        if self.platform_stage == 0:
+            print("reached stage 1")
+            self.platform_stage = 1
+            # TODO play victory music
+            self.send(endecoder.encode_light_pattern(constants.LED_WIN_PATTERN))
+            self.send(endecoder.encode_platform_height(money_lost))
+            self.send(endecoder.encode_light_height(money_lost))
 
     def platform_stage_2(self):
-        vals = "" + str(self.reel_values[0]) + "," + str(self.reel_values[1]) + "," + str(self.reel_values[2])
-        Audio.playVoice((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
+        if self.platform_stage == 1:
+            if not (False in self.stage_1_done):
+                print("reached stage 2")
+                for state in self.stage_1_done:
+                    state = False
+                vals = "" + str(self.reel_values[0]) + "," + str(self.reel_values[1]) + "," + str(self.reel_values[2])
+                Audio.playVoice((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
 
     def platform_stage_3(self):
-        # TODO shredding sounds start
-        Audio.play_vfx_once(constants.AUDIO_SHRED)
-        self.send(endecoder.encode_platform_height(0))
-        self.send(endecoder.encode_fan_start())
+        if self.platform_stage == 2:
+            print("reached stage 3")
+            Audio.play_vfx_once(constants.AUDIO_SHRED)
+            self.send(endecoder.encode_platform_height(0))
+            self.send(endecoder.encode_fan_start())
 
     def platform_stage_4(self):
-        self.send(endecoder.encode_fan_stop())
-        self.finish_sequence()
+        if self.platform_stage == 3:
+            print("reached stage 4")
+            self.send(endecoder.encode_fan_stop())
+            self.finish_sequence()
 
     def finish_sequence(self):
         for reel in self.reels_stopped:

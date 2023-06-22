@@ -71,6 +71,8 @@ def __get_sfx_audio(index: int):
             return AudioSegment.from_wav("Audio/SFX/ConfirmThirdWheel.wav")
         case 7:
             return AudioSegment.from_wav("Audio/SFX/Shredding.wav")
+        case 8:
+            return AudioSegment.from_wav("Audio/SFX/ConfirmThirdWheel.wav") # TODO actually input the win sound
 
 def _getDataWav(input):
     path = "Audio/Data/" + str(input[0]) + str(input[1]) + str(input[2]) + ".wav"
@@ -81,9 +83,9 @@ def _getDataWav(input):
 
 def playVoice(input : tuple):
     if(re.fullmatch("\([0-9], [0-9], [0-9]\)", str(input))):
-        money = str(Dataset.fetchData(input))
-        print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + money)
-        if (money == 0.0):
+        money = Dataset.fetchData(input)
+        print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + str(money))
+        if money == 0.0:
             clip = _getDataWav(input)
             playing = play(clip)
         else:
@@ -93,7 +95,9 @@ def playVoice(input : tuple):
         print("Input not accepted, it should be in the form of int,int,int")
 
 def play_vfx_once(index: int):
-    play_one_shot(__get_sfx_audio(index))
+    playFile = play_one_shot(__get_sfx_audio(index))
+    if (index == constants.AUDIO_VICTORY):
+        playingSounds[1] = playFile
 
 def play_one_shot_path(path:str):
     if(Path(path).is_file):
@@ -105,7 +109,7 @@ def play_one_shot_path(path:str):
 
 def play_one_shot(audio: AudioSegment):
     if audio:
-        play(audio)
+        return play(audio)
     else:
         print("Invalid AudioSegment tried to play")
 
