@@ -119,7 +119,7 @@ class Controller:
                     state = False
                 vals = "" + str(self.reel_values[0]) + "," + str(self.reel_values[1]) + "," + str(self.reel_values[2])
                 Audio.stop_sfx_loop(9)
-                Audio.play_vfx_once(10)
+                # Audio.play_vfx_once(10)
                 Audio.playVoice((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
 
     def platform_stage_3(self):
