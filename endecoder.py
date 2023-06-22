@@ -104,13 +104,17 @@ def __decode_reel(input: str, tail: str):
     """Specific decoder for the reel"""
     headerdata = int(input[:constants.HEADER_LENGTH][2:])
     angle = float(tail[constants.HEADER_LENGTH:])
+    part = 1
     match headerdata:
         case 1:
-            angle = round(angle/90)
+            part = (360 / constants.COUNTRY_AMOUNT)
+
         case 2:
-            angle = round(angle/90)  
+            part = (360 / constants.GAME_AMOUNT)
+
         case 3:
-            angle = round(angle/(360/7))  
+            part = (360 / constants.YEAR_AMOUNT)
+    angle = int(angle/part)
     if constants.COMM_DEBUG:
         print(f"RL{headerdata} {tail}")
     return (int(headerdata), int(angle))
