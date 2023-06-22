@@ -29,24 +29,15 @@ class Communication:
         if len(data_str) > 0:
             # data_str = str(msg)[2:-1]
             data_str = data_str[:-4]
-            if constants.DEBUG:
+            if constants.COMM_DEBUG:
                 print("in:" + data_str)
             return data_str
         return data_str
 
     def send_outgoing(self, msg, arduino):
-        # self.send_buffer.append(msg)
-        if constants.DEBUG:
+        if constants.COMM_DEBUG:
             print("out:" + msg)
-        # arduino.writelines(str.encode(msg))
         arduino.write(str.encode(msg + '\n'))
-
-    def process_buffer(self, arduino):
-        if len(self.send_buffer) > 0 and time.process_time() > self.delay:
-            msg = self.send_buffer.popleft()
-            print(str(self.send_buffer) + msg)
-            # arduino.writelines(str.encode(msg))
-            self.delay = time.process_time() + constants.LOCAL_SEND_DELAY
 
     def process_data(self, arduino):
         msg = ""
@@ -65,7 +56,7 @@ class Communication:
     def initialise(self, baudrate):
         port = self.get_port()
         baud_rate = constants.BAUD_RATE
-        arduino = serial.Serial(port=port, baudrate=baud_rate, timeout=0)
+        arduino = serial.Serial(port=port, baudrate=baud_rate, timeout=1)
         return arduino
 
 

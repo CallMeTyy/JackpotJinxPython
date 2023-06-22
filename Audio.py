@@ -83,7 +83,7 @@ def playVoice(input : tuple):
     if(re.fullmatch("\([0-9], [0-9], [0-9]\)", str(input))):
         money = str(Dataset.fetchData(input))
         print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + money)
-        if (money is "N/A"):
+        if (money == 0.0):
             clip = _getDataWav(input)
             playing = play(clip)
         else:
@@ -113,7 +113,7 @@ def playLoop(index):
         if(index == 0):
             if(0 not in playingLoops):
                 playingLoops[index] = music.play()
-                if constants.DEBUG:
+                if constants.COMM_DEBUG:
                     print("Playing loop " + str(index))
 
 def play_sfx_loop(index: int):
@@ -123,7 +123,7 @@ def play_sfx_loop(index: int):
 def stopLoop(index):
     if(index in playingLoops):
         playingLoops.pop(index)
-        if constants.DEBUG:
+        if constants.COMM_DEBUG:
             print("Stopping loop " + str(index))
 
 def stop_sfx_loop(index: int):

@@ -1,5 +1,7 @@
 
-DEBUG = True
+COMM_DEBUG = False
+AUDIO_DEBUG = True
+
 SIMULATED_SERIAL = False
 
 ARDUINO_PORT_MAC = '/dev/cu.usbmodem142101'
@@ -27,6 +29,10 @@ LED_IDLE_PATTERN = 0
 LED_SPIN_PATTERN = 1
 LED_WIN_PATTERN = 2
 
+COUNTRY_AMOUNT = 4
+GAME_AMOUNT = 4
+YEAR_AMOUNT = 7
+IMAGE_POSITION_FRACTION = 0.5   # this is where the image is in the angular range of the value on the reel
 # Audio Constants
 
 AUDIO_MUSIC = 0
