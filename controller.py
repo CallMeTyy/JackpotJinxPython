@@ -11,7 +11,7 @@ class Controller:
         self.reels_stopped = [False, False, False]
         self.reel_values = [-1, -1, -1]
         self.reels_spinning = False
-        self.stage_1_done = [False, False] # [platform_done, sound_done]
+        self.stage_1_done = False # [platform_done, sound_done]
         self.installation_active = False
         self.error_state = False
         self.calibration_done = False
@@ -33,7 +33,7 @@ class Controller:
             print("reels: " + str(self.reel_values))
         if not (False in self.reels_stopped):
             self.reels_spinning = False
-            money_lost = Dataset.fetchData((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
+            money_lost = Dataset.fetch_data((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
             if constants.COMM_DEBUG:
                 print("money lost: " + str(money_lost))
             self.play_shredsound = money_lost != 0.0
@@ -86,7 +86,7 @@ class Controller:
             print("platform done!")
         match self.platform_stage:
             case 1:
-                self.stage_1_done[0] = True
+                self.stage_1_done = True
                 self.platform_stage_2()
             case 3:
                 self.platform_stage_4()
@@ -97,11 +97,9 @@ class Controller:
                 if constants.AUDIO_DEBUG:
                     print("voice done!")
                 self.platform_stage_3()
-            case 1:     # victory sound
-                if constants.AUDIO_DEBUG:
-                    print("win sound done!")
-                self.stage_1_done[1] = True
-                self.platform_stage_2()
+            # case 1:     # victory sound
+            #     if constants.AUDIO_DEBUG:
+            #         print("win sound done!")
 
     def platform_stage_1(self, money_lost):
         if self.platform_stage == 0:
@@ -116,12 +114,11 @@ class Controller:
 
     def platform_stage_2(self):
         if self.platform_stage == 1:
-            if self.stage_1_done[0]:
+            if self.stage_1_done:
                 self.platform_stage = 2
                 if constants.COMM_DEBUG:
                     print("reached stage 2")
-                for state in self.stage_1_done:
-                    state = False
+                self.stage_1_done = False
                 vals = "" + str(self.reel_values[0]) + "," + str(self.reel_values[1]) + "," + str(self.reel_values[2])
                 Audio.stop_sfx_loop(9)
                 # Audio.play_vfx_once(10)

@@ -6,10 +6,8 @@ import endecoder
 from collections import deque
 import time
 
+
 class Communication:
-    def __init__(self):
-        self.send_buffer = deque()
-        self.delay = 0
 
     def get_port(self):
         ports = list(serial.tools.list_ports.comports())
@@ -39,7 +37,6 @@ class Communication:
         if constants.COMM_DEBUG:
             print("out:" + msg)
         arduino.write(str.encode(msg + '\n'))
-
 
     def initialise(self, baudrate):
         port = self.get_port()

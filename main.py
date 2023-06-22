@@ -14,7 +14,7 @@ def process_loop(com, ardui, contr):
             # if constants.DEBUG:
             #     print(msg)
             endecoder.decode(msg, contr)
-        Audio.handleLoops()
+        Audio.handle_loops()
         waitDone = Audio.wait_for_voice_done()
         if (not waitDone == -1):
             controller.sound_done(waitDone)

@@ -88,7 +88,7 @@ def _getDataWav(input):
 
 def playVoice(input : tuple):
     if(re.fullmatch("\([0-9], [0-9], [0-9]\)", str(input))):
-        money = Dataset.fetchData(input)
+        money = Dataset.fetch_data(input)
         if constants.AUDIO_DEBUG:
             print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + str(money))
         if money == 0.0:
@@ -144,7 +144,7 @@ def wait_for_voice_done():
             return 1
     return -1            
 
-def stopLoop(index):
+def stop_loop(index):
     if(index in playingLoops):
         playingLoops.pop(index)
         if constants.COMM_DEBUG:
@@ -155,12 +155,12 @@ def stop_sfx_loop(index: int):
         playingLoops[__get_sfx_audio(index)].stop()
         playingLoops.pop(__get_sfx_audio(index))
 
-def handleLoops():
+def handle_loops():
     for wave,p in playingLoops.items():
         if not p.is_playing():            
             playingLoops[wave] = play(wave)
 
-def playShredder(value):
+def play_shredder(value):
     shredder = AudioSegment.from_wav("Audio/SFX/Shredding.wav")[:remap(value, 0.02, 1500, 3, 10) * 1000]
     return play(shredder.fade_out(500))
 

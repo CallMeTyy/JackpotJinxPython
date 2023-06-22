@@ -15,7 +15,7 @@ dataAustralia = DataFrame([[627.86,13.73,77.74,146.14],[600.11,13.87,71.02,155.1
 data = (dataBritain,dataNevada,dataMacau,dataAustralia)
 
 
-def fetchData(input : tuple):
+def fetch_data(input : tuple):
     if constants.AUDIO_DEBUG:
         print("final reel values = " + str(input))
     if(re.fullmatch("\([0-9], [0-9], [0-9]\)", str(input))):
