@@ -138,6 +138,7 @@ class Controller:
         self.installation_active = False
         self.send(endecoder.encode_light_pattern(constants.LED_IDLE_PATTERN))
         self.platform_stage = 0
+        print("ready for next use!")
 
     # if the installation notices a problem in the hardware this method will stop it in its tracks and try to recover
     def external_error(self):
