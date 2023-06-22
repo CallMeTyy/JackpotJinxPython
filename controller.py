@@ -103,6 +103,7 @@ class Controller:
             print("reached stage 1")
             self.platform_stage = 1
             Audio.play_vfx_once(8)
+            Audio.play_sfx_loop(9)
             self.send(endecoder.encode_light_pattern(constants.LED_WIN_PATTERN))
             self.send(endecoder.encode_platform_height(money_lost))
             self.send(endecoder.encode_light_height(money_lost))
@@ -115,6 +116,8 @@ class Controller:
                 for state in self.stage_1_done:
                     state = False
                 vals = "" + str(self.reel_values[0]) + "," + str(self.reel_values[1]) + "," + str(self.reel_values[2])
+                Audio.stop_sfx_loop(9)
+                Audio.play_vfx_once(10)
                 Audio.playVoice((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
 
     def platform_stage_3(self):
