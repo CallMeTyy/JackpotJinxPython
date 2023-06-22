@@ -79,7 +79,7 @@ class Controller:
             case 3:
                 self.platform_stage_4()
 
-    def sound_done(self):
+    def sound_done(self, finishedSound):
         if self.platform_stage == 2:
             self.platform_stage_3()
 
