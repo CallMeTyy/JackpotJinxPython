@@ -95,15 +95,9 @@ def playVoice(input : tuple):
             playing = play(clip)
             __wait_for_sounds[0] = playing
         else:
-            # print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + str(money))
-            if (money == 0.0):
-                clip = _getDataWav(input)
-                playing = play(clip)
-                __wait_for_sounds[0] = playing
-            else:
-                clip = win + Congratulations + _getDataWav(input) + _getCountryWav(input[0]) + _getGameWav(input[1]) + _getYearWav(input[2])
-                playing = play(clip)
-                __wait_for_sounds[0] = playing
+            clip = win + Congratulations + _getDataWav(input) + _getCountryWav(input[0]) + _getGameWav(input[1]) + _getYearWav(input[2])
+            playing = play(clip)
+            __wait_for_sounds[0] = playing
     else:
         print("Input not accepted, it should be in the form of int,int,int")
 
