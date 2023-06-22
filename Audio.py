@@ -89,13 +89,14 @@ def _getDataWav(input):
 def playVoice(input : tuple):
     if(re.fullmatch("\([0-9], [0-9], [0-9]\)", str(input))):
         money = Dataset.fetchData(input)
-        print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + str(money))
+        if constants.AUDIO_DEBUG:
+            print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + str(money))
         if money == 0.0:
-            clip = _getDataWav(input)
+            clip = win
             playing = play(clip)
             __wait_for_sounds[0] = playing
         else:
-            clip = win + Congratulations + _getDataWav(input) + _getCountryWav(input[0]) + _getGameWav(input[1]) + _getYearWav(input[2])
+            clip = win
             playing = play(clip)
             __wait_for_sounds[0] = playing
     else:
