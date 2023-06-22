@@ -67,7 +67,7 @@ def playVoice(inputs):
         else:
             money = str(Dataset.fetchData(inputs))
             print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + money)
-            if (money is "N/A"):
+            if (money is 0):
                 clip = _getDataWav(input)
                 playing = play(clip)
             else:
