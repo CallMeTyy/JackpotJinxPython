@@ -13,6 +13,8 @@ Congratulations = AudioSegment.from_wav("Audio/Standard/Congratulations.wav")
 
 music = simpleaudio.WaveObject.from_wave_file("Audio/Standard/Congratulations.wav")
 
+win = AudioSegment.from_wav("Audio/SFX/Win.wav")
+
 def _getCountryWav(input):
     if(input == 0):
         return AudioSegment.from_wav("Audio/Countries/Britain.wav")
@@ -99,7 +101,7 @@ def playVoice(input : tuple):
                 playing = play(clip)
                 __wait_for_sounds[0] = playing
             else:
-                clip = Congratulations + _getDataWav(input) + _getCountryWav(input[0]) + _getGameWav(input[1]) + _getYearWav(input[2])
+                clip = win + Congratulations + _getDataWav(input) + _getCountryWav(input[0]) + _getGameWav(input[1]) + _getYearWav(input[2])
                 playing = play(clip)
                 __wait_for_sounds[0] = playing
     else:
