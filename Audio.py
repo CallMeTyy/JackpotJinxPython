@@ -72,6 +72,10 @@ def __get_sfx_audio(index: int):
             return AudioSegment.from_wav("Audio/SFX/Shredding.wav")
         case 8:
             return AudioSegment.from_wav("Audio/SFX/ConfirmThirdWheel.wav") # TODO actually input the win sound
+        case 9:
+            return AudioSegment.from_wav("Audio/SFX/PlatformRising.wav")
+        case 10:
+            return AudioSegment.from_wav("Audio/SFX/Win.wav")
 
 def _getDataWav(input):
     path = "Audio/Data/" + str(input[0]) + str(input[1]) + str(input[2]) + ".wav"
