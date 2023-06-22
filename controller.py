@@ -11,7 +11,7 @@ class Controller:
         self.reels_stopped = [False, False, False]
         self.reel_values = [-1, -1, -1]
         self.reels_spinning = False
-        self.stage_1_done = [False, False]
+        self.stage_1_done = [False, False] # [platform_done, sound_done]
         self.installation_active = False
         self.error_state = False
         self.calibration_done = False
@@ -75,8 +75,11 @@ class Controller:
         # sequence is reset to the start.
 
     def platform_done(self):
+        if constants.AUDIO_DEBUG:
+            print("platform done!")
         match self.platform_stage:
             case 1:
+                self.stage_1_done[0] = True
                 self.platform_stage_2()
             case 3:
                 self.platform_stage_4()
@@ -84,15 +87,20 @@ class Controller:
     def sound_done(self, sound_id):
         match sound_id:
             case 0:     # voice
+                if constants.AUDIO_DEBUG:
+                    print("voice done!")
                 self.platform_stage_3()
             case 1:     # victory sound
+                if constants.AUDIO_DEBUG:
+                    print("win sound done!")
+                self.stage_1_done[1] = True
                 self.platform_stage_2()
 
     def platform_stage_1(self, money_lost):
         if self.platform_stage == 0:
             print("reached stage 1")
             self.platform_stage = 1
-            # TODO play victory music
+            Audio.play_vfx_once(8)
             self.send(endecoder.encode_light_pattern(constants.LED_WIN_PATTERN))
             self.send(endecoder.encode_platform_height(money_lost))
             self.send(endecoder.encode_light_height(money_lost))
@@ -100,6 +108,7 @@ class Controller:
     def platform_stage_2(self):
         if self.platform_stage == 1:
             if not (False in self.stage_1_done):
+                self.platform_stage = 2
                 print("reached stage 2")
                 for state in self.stage_1_done:
                     state = False
@@ -108,6 +117,7 @@ class Controller:
 
     def platform_stage_3(self):
         if self.platform_stage == 2:
+            self.platform_stage = 3
             print("reached stage 3")
             Audio.play_vfx_once(constants.AUDIO_SHRED)
             self.send(endecoder.encode_platform_height(0))
@@ -115,6 +125,7 @@ class Controller:
 
     def platform_stage_4(self):
         if self.platform_stage == 3:
+            self.platform_stage = 4
             print("reached stage 4")
             self.send(endecoder.encode_fan_stop())
             self.finish_sequence()
