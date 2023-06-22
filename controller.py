@@ -130,7 +130,7 @@ class Controller:
             if constants.COMM_DEBUG:
                 print("reached stage 3")
             if self.play_shredsound:
-                Audio.playShredder(self.currentMoneyLost)
+                Audio.play_shredder(self.currentMoneyLost)
             self.send(endecoder.encode_platform_height(0))
             self.send(endecoder.encode_fan_start())
 
