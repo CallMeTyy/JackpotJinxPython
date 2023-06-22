@@ -83,7 +83,7 @@ def playVoice(input : tuple):
     if(re.fullmatch("\([0-9], [0-9], [0-9]\)", str(input))):
         money = str(Dataset.fetchData(input))
         print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + money)
-        if (money is "N/A"):
+        if (money == 0.0):
             clip = _getDataWav(input)
             playing = play(clip)
         else:
