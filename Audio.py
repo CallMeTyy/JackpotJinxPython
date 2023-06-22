@@ -160,7 +160,7 @@ def handleLoops():
             playingLoops[wave] = play(wave)
 
 def playShredder(value):
-    shredder = AudioSegment.from_wav("Audio/SFX/Shredding.wav")[:remap(value, 0.02, 1500,1,10)]
+    shredder = AudioSegment.from_wav("Audio/SFX/Shredding.wav")[:remap(value, 0.02, 1500,1,10)*1000]
     shredder.fade_out(500)
     return play(shredder)
 
