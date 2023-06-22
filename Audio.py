@@ -6,9 +6,8 @@ import re
 import Dataset
 import constants
 
-
-
 playingLoops = {}
+__wait_for_souds = {}
 
 Congratulations = AudioSegment.from_wav("Audio/Standard/Congratulations.wav")
 
@@ -88,9 +87,11 @@ def playVoice(input : tuple):
         if money == 0.0:
             clip = _getDataWav(input)
             playing = play(clip)
+            __wait_for_souds[0] = playing
         else:
             clip = Congratulations + _getDataWav(input) + _getCountryWav(input[0]) + _getGameWav(input[1]) + _getYearWav(input[2])
             playing = play(clip)
+            __wait_for_souds[0] = playing
     else:
         print("Input not accepted, it should be in the form of int,int,int")
 
@@ -123,6 +124,17 @@ def playLoop(index):
 def play_sfx_loop(index: int):
     if __get_sfx_audio(index) not in playingLoops:
         playingLoops[__get_sfx_audio(index)] = play(__get_sfx_audio(index))
+
+def wait_for_voice_done():
+    if 0 in __wait_for_souds:  
+        if not __wait_for_souds[0].is_playing():
+            __wait_for_souds.pop(0)
+            return 0
+    elif 1 in __wait_for_souds:  
+        if not __wait_for_souds[1].is_playing():
+            __wait_for_souds.pop(1)
+            return 1
+    return -1            
 
 def stopLoop(index):
     if(index in playingLoops):
