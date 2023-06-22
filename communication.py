@@ -14,9 +14,10 @@ class Communication:
     def get_port(self):
         ports = list(serial.tools.list_ports.comports())
         for p in ports:
-            print(p)
             short = str(p).split(' ')[0]
-            print(short)
+            if constants.COMM_DEBUG:
+                print(p)
+                print(short)
             if short == constants.ARDUINO_PORT_MAC:
                 return short
             elif short == constants.ARDUINO_PORT_WINDOWS:

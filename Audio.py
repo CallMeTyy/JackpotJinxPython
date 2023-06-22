@@ -89,7 +89,8 @@ def _getDataWav(input):
 def playVoice(input : tuple):
     if(re.fullmatch("\([0-9], [0-9], [0-9]\)", str(input))):
         money = Dataset.fetchData(input)
-        print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + str(money))
+        if constants.AUDIO_DEBUG:
+            print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + str(money))
         if money == 0.0:
             clip = _getDataWav(input)
             playing = play(clip)
@@ -108,7 +109,8 @@ def play_vfx_once(index: int):
 
 def play_one_shot_path(path:str):
     if(Path(path).is_file):
-        print("Playing sound: " + path)
+        if constants.AUDIO_DEBUG:
+            print("Playing sound: " + path)
         sound = AudioSegment.from_wav(path)
         play(sound)
     else:
@@ -124,7 +126,7 @@ def playLoop(index):
         if(index == 0):
             if(0 not in playingLoops):
                 playingLoops[index] = music.play()
-                if constants.COMM_DEBUG:
+                if constants.AUDIO_DEBUG:
                     print("Playing loop " + str(index))
 
 def play_sfx_loop(index: int):
