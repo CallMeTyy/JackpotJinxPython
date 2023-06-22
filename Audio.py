@@ -93,7 +93,7 @@ def playVoice(input : tuple):
             playing = play(clip)
             __wait_for_sounds[0] = playing
         else:
-            money = str(Dataset.fetchData(inputs))
+            money = str(Dataset.fetchData(input))
             print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + money)
             if (money == 0.0):
                 clip = _getDataWav(input)
@@ -164,9 +164,8 @@ def handleLoops():
             playingLoops[wave] = play(wave)
 
 def playShredder(value):
-    shredder = AudioSegment.from_wav("Audio/SFX/Shredding.wav")[:remap(value, 0.02, 1500,1,10)*1000]
-    shredder.fade_out(500)
-    return play(shredder)
+    shredder = AudioSegment.from_wav("Audio/SFX/Shredding.wav")[:remap(value, 0.02, 1500,3,10)*1000]
+    return play(shredder.fade_out(500))
 
 def remap(old_val, old_min, old_max, new_min, new_max):
     return (new_max - new_min)*(old_val - old_min) / (old_max - old_min) + new_min

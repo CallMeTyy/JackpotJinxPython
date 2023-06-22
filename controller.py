@@ -19,6 +19,7 @@ class Controller:
         self.comm = serial_com
         self.platform_stage = 0
         self.play_shredsound = True
+        self.currentMoneyLost = 0
 
     def calibration_finished(self):
         self.calibration_done = True
@@ -34,6 +35,7 @@ class Controller:
             money_lost = Dataset.fetchData((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
             print("money lost: " + str(money_lost))
             self.play_shredsound = money_lost != 0.0
+            self.currentMoneyLost = money_lost
             self.start_platform_sequence(money_lost)
             pass
 
@@ -125,7 +127,7 @@ class Controller:
             self.platform_stage = 3
             print("reached stage 3")
             if self.play_shredsound:
-                Audio.play_vfx_once(constants.AUDIO_SHRED)
+                Audio.playShredder(self.currentMoneyLost)
             self.send(endecoder.encode_platform_height(0))
             self.send(endecoder.encode_fan_start())
 
