@@ -38,8 +38,6 @@ class Controller:
         if self.reels_spinning:
             self.send(endecoder.encode_reel_requestangle(reel_num))
             self.send(endecoder.encode_button_light_off(reel_num))
-            # TODO stop playing reel spinning sound
-            # TODO play reel stopped sound
             print("Playing Stop")
             Audio.play_vfx_once(3+reel_num)
             Audio.stop_sfx_loop(reel_num)
@@ -56,7 +54,6 @@ class Controller:
             pass
 
     def start_reel_spin(self, reel_num):
-        # TODO play reel spinning sound
         # print("Reel " + str(reel_num) + " spinning!")
         Audio.play_sfx_loop(reel_num)
         # print(endecoder.encode_reel_setv(reel_num, constants.REEL_SPEED))
