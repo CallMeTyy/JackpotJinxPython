@@ -40,19 +40,6 @@ class Communication:
             print("out:" + msg)
         arduino.write(str.encode(msg + '\n'))
 
-    def process_data(self, arduino):
-        msg = ""
-        while True:
-            msg_in = self.read_incoming(arduino)
-            if len(msg_in) > 0:
-                # print(msg_in)
-                # word_end_pos = msg.find("\r\n")
-                # command = msg[:word_end_pos+2]
-                # msg = msg[word_end_pos+2:]
-                # print(command)
-                # print(msg)
-                pass
-
 
     def initialise(self, baudrate):
         port = self.get_port()
