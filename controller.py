@@ -104,7 +104,7 @@ class Controller:
         if self.platform_stage == 0:
             print("reached stage 1")
             self.platform_stage = 1
-            Audio.play_vfx_once(8)
+            # Audio.play_vfx_once(8)
             Audio.play_sfx_loop(9)
             self.send(endecoder.encode_light_pattern(constants.LED_WIN_PATTERN))
             self.send(endecoder.encode_platform_height(money_lost))
@@ -112,7 +112,7 @@ class Controller:
 
     def platform_stage_2(self):
         if self.platform_stage == 1:
-            if not (False in self.stage_1_done):
+            if self.stage_1_done[0]:
                 self.platform_stage = 2
                 print("reached stage 2")
                 for state in self.stage_1_done:

@@ -93,8 +93,7 @@ def playVoice(input : tuple):
             playing = play(clip)
             __wait_for_sounds[0] = playing
         else:
-            money = str(Dataset.fetchData(input))
-            print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + money)
+            # print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + str(money))
             if (money == 0.0):
                 clip = _getDataWav(input)
                 playing = play(clip)
