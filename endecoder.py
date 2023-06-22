@@ -12,16 +12,17 @@ def encode_platform_height(money):
 def encode_platform_stop():
     return "PLASTP"
 
-def encode_light_pattern(money):
+def encode_light_pattern(decIndex):
+    return f"LE2PAT{decIndex}"
+
+
+def encode_light_height(money):
     outmin = constants.LED_MINHEIGHT
     outmax = constants.LED_MAXHEIGHT
     mmin = constants.MIN_MONEY
     mmax = constants.MAX_MONEY
     height = round(outmin + (((money - mmin) / (mmax - mmin)) * (outmax - outmin)))
     return f"LE1PAT{height}"
-
-def encode_light_height(decIndex):
-    return f"LE2PAT{decIndex}"
 
 def encode_button_light_on(reel):
     return f"BT{reel}ONN"
