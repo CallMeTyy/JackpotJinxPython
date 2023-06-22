@@ -122,13 +122,6 @@ def play_one_shot(audio: AudioSegment):
     else:
         print("Invalid AudioSegment tried to play")
 
-def playLoop(index):
-        if(index == 0):
-            if(0 not in playingLoops):
-                playingLoops[index] = music.play()
-                if constants.AUDIO_DEBUG:
-                    print("Playing loop " + str(index))
-
 def play_sfx_loop(index: int):
     if __get_sfx_audio(index) not in playingLoops:
         playingLoops[__get_sfx_audio(index)] = play(__get_sfx_audio(index))
@@ -142,14 +135,7 @@ def wait_for_voice_done():
         if not __wait_for_sounds[1].is_playing():
             __wait_for_sounds.pop(1)
             return 1
-    return -1            
-
-def stop_loop(index):
-    if(index in playingLoops):
-        playingLoops.pop(index)
-        if constants.COMM_DEBUG:
-            print("Stopping loop " + str(index))
-
+    return -1
 def stop_sfx_loop(index: int):
     if __get_sfx_audio(index) in playingLoops:
         playingLoops[__get_sfx_audio(index)].stop()
