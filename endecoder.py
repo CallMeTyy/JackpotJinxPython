@@ -73,6 +73,9 @@ def encode_sys_stop():
     """Creates the message for sending the command to stop the system"""
     return "SYSSTP"
 
+def encode_nodata():
+    return 
+
 
 
 
@@ -97,6 +100,13 @@ def decode(input: str, controller):
             __decode_sys(input, tail, controller)
         case "PL":
             __decode_platform(input, tail, controller)
+        case "OK":
+            controller.send_next_message()
+        case "RS":
+            # Resend last message
+            controller.resend_message()
+        case "RJ":
+            controller.reset_installation()
         
 
 def __decode_lever(input: str, tail: str):

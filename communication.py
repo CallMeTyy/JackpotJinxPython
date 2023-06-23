@@ -5,6 +5,7 @@ import serial.tools.list_ports
 
 
 import constants
+import endecoder
 
 
 class Communication:
@@ -58,7 +59,7 @@ class Communication:
             msg = self.buffer[0]
             arduino.write(str.encode(msg + '\n'))
         else:
-            # TODO arduino.write(endecoder.encode_no_msg())
+            arduino.write(endecoder.encode_nodata())
             pass
 
     def initialise(self, baudrate):
