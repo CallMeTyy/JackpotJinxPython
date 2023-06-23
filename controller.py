@@ -11,7 +11,7 @@ class Controller:
         self.reels_stopped = [False, False, False]
         self.reel_values = [-1, -1, -1]
         self.reels_spinning = False
-        self.stage_1_done = [False, False] # [platform_done, sound_done]
+        self.stage_1_done = False # [platform_done, sound_done]
         self.installation_active = False
         self.error_state = False
         self.calibration_done = False
@@ -29,11 +29,13 @@ class Controller:
         self.reel_values[reel_num] = reel_val
         self.reels_stopped[reel_num] = True
         self.send(endecoder.encode_reel_stop(reel_num, reel_val))
-        print("reels: " + str(self.reel_values))
+        if constants.COMM_DEBUG:
+            print("reels: " + str(self.reel_values))
         if not (False in self.reels_stopped):
             self.reels_spinning = False
-            money_lost = Dataset.fetchData((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
-            print("money lost: " + str(money_lost))
+            money_lost = Dataset.fetch_data((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
+            if constants.COMM_DEBUG:
+                print("money lost: " + str(money_lost))
             self.play_shredsound = money_lost != 0.0
             self.currentMoneyLost = money_lost
             self.start_platform_sequence(money_lost)
@@ -44,7 +46,8 @@ class Controller:
         if self.reels_spinning:
             self.send(endecoder.encode_reel_requestangle(reel_num))
             self.send(endecoder.encode_button_light_off(reel_num))
-            print("Playing Stop")
+            if constants.AUDIO_DEBUG:
+                print("Playing Stop")
             Audio.play_vfx_once(3+reel_num)
             Audio.stop_sfx_loop(reel_num)
             pass
@@ -83,7 +86,7 @@ class Controller:
             print("platform done!")
         match self.platform_stage:
             case 1:
-                self.stage_1_done[0] = True
+                self.stage_1_done = True
                 self.platform_stage_2()
             case 3:
                 self.platform_stage_4()
@@ -94,15 +97,14 @@ class Controller:
                 if constants.AUDIO_DEBUG:
                     print("voice done!")
                 self.platform_stage_3()
-            case 1:     # victory sound
-                if constants.AUDIO_DEBUG:
-                    print("win sound done!")
-                self.stage_1_done[1] = True
-                self.platform_stage_2()
+            # case 1:     # victory sound
+            #     if constants.AUDIO_DEBUG:
+            #         print("win sound done!")
 
     def platform_stage_1(self, money_lost):
         if self.platform_stage == 0:
-            print("reached stage 1")
+            if constants.COMM_DEBUG:
+                print("reached stage 1")
             self.platform_stage = 1
             # Audio.play_vfx_once(8)
             Audio.play_sfx_loop(9)
@@ -112,11 +114,11 @@ class Controller:
 
     def platform_stage_2(self):
         if self.platform_stage == 1:
-            if self.stage_1_done[0]:
+            if self.stage_1_done:
                 self.platform_stage = 2
-                print("reached stage 2")
-                for state in self.stage_1_done:
-                    state = False
+                if constants.COMM_DEBUG:
+                    print("reached stage 2")
+                self.stage_1_done = False
                 vals = "" + str(self.reel_values[0]) + "," + str(self.reel_values[1]) + "," + str(self.reel_values[2])
                 Audio.stop_sfx_loop(9)
                 # Audio.play_vfx_once(10)
@@ -125,16 +127,18 @@ class Controller:
     def platform_stage_3(self):
         if self.platform_stage == 2:
             self.platform_stage = 3
-            print("reached stage 3")
+            if constants.COMM_DEBUG:
+                print("reached stage 3")
             if self.play_shredsound:
-                Audio.playShredder(self.currentMoneyLost)
+                Audio.play_shredder(self.currentMoneyLost)
             self.send(endecoder.encode_platform_height(0))
             self.send(endecoder.encode_fan_start())
 
     def platform_stage_4(self):
         if self.platform_stage == 3:
             self.platform_stage = 4
-            print("reached stage 4")
+            if constants.COMM_DEBUG:
+                print("reached stage 4")
             self.send(endecoder.encode_fan_stop())
             self.finish_sequence()
 
@@ -146,7 +150,8 @@ class Controller:
         self.installation_active = False
         self.send(endecoder.encode_light_pattern(constants.LED_IDLE_PATTERN))
         self.platform_stage = 0
-        print("ready for next use!")
+        if constants.COMM_DEBUG:
+            print("ready for next use!")
 
     # if the installation notices a problem in the hardware this method will stop it in its tracks and try to recover
     def external_error(self):

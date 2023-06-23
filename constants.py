@@ -1,6 +1,6 @@
 
-COMM_DEBUG = True
-AUDIO_DEBUG = True
+COMM_DEBUG = False
+AUDIO_DEBUG = False
 
 SIMULATED_SERIAL = False
 

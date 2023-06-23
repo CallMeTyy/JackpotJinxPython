@@ -88,8 +88,9 @@ def _getDataWav(input):
 
 def playVoice(input : tuple):
     if(re.fullmatch("\([0-9], [0-9], [0-9]\)", str(input))):
-        money = Dataset.fetchData(input)
-        print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + str(money))
+        money = Dataset.fetch_data(input)
+        if constants.AUDIO_DEBUG:
+            print("The value for country " + str(input[0]) +  ", column " + str(input[1]) +", row " + str(input[2]) + ", is: " + str(money))
         if money == 0.0:
             clip = _getDataWav(input)
             playing = play(clip)
@@ -108,7 +109,8 @@ def play_vfx_once(index: int):
 
 def play_one_shot_path(path:str):
     if(Path(path).is_file):
-        print("Playing sound: " + path)
+        if constants.AUDIO_DEBUG:
+            print("Playing sound: " + path)
         sound = AudioSegment.from_wav(path)
         play(sound)
     else:
@@ -119,13 +121,6 @@ def play_one_shot(audio: AudioSegment):
         return play(audio)
     else:
         print("Invalid AudioSegment tried to play")
-
-def playLoop(index):
-        if(index == 0):
-            if(0 not in playingLoops):
-                playingLoops[index] = music.play()
-                if constants.COMM_DEBUG:
-                    print("Playing loop " + str(index))
 
 def play_sfx_loop(index: int):
     if __get_sfx_audio(index) not in playingLoops:
@@ -140,25 +135,18 @@ def wait_for_voice_done():
         if not __wait_for_sounds[1].is_playing():
             __wait_for_sounds.pop(1)
             return 1
-    return -1            
-
-def stopLoop(index):
-    if(index in playingLoops):
-        playingLoops.pop(index)
-        if constants.COMM_DEBUG:
-            print("Stopping loop " + str(index))
-
+    return -1
 def stop_sfx_loop(index: int):
     if __get_sfx_audio(index) in playingLoops:
         playingLoops[__get_sfx_audio(index)].stop()
         playingLoops.pop(__get_sfx_audio(index))
 
-def handleLoops():
+def handle_loops():
     for wave,p in playingLoops.items():
         if not p.is_playing():            
             playingLoops[wave] = play(wave)
 
-def playShredder(value):
+def play_shredder(value):
     shredder = AudioSegment.from_wav("Audio/SFX/Shredding.wav")[:remap(value, 0.02, 1500, 3, 10) * 1000]
     return play(shredder.fade_out(500))
 

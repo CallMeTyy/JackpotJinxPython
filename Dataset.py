@@ -2,6 +2,8 @@ from pandas import DataFrame
 from pathlib import Path
 import re
 
+import constants
+
 dataBritain = DataFrame([[75.68,37.01,202.70,177.16],[89.94,38.74,193.69,187.45],[77.00,32.61,168.34,156.74],[73.87,33.08,177.64,160.07],[68.96,27.44,190.99,114.99],[21.64,14.21,240.57,59.76],[67.45,27.02,288.47,147.93]], columns=(0,1,2,3))
 # print(dataBritain)
 dataNevada = DataFrame([[296.72,0.93, 0.0,7.54],[349.62,1.05,0.0,8.25],[350.68,1.23,0.0,8.89],[317.16,1.16,0.0,9.17],[303.62,1.17,0.0,9.30],[468.07,1.64,0.0,24.18],[448.20,2.04,0.0,22.53]], columns=(0,1,2,3))
@@ -13,8 +15,9 @@ dataAustralia = DataFrame([[627.86,13.73,77.74,146.14],[600.11,13.87,71.02,155.1
 data = (dataBritain,dataNevada,dataMacau,dataAustralia)
 
 
-def fetchData(input : tuple):
-    print("final reel values = " + str(input))
+def fetch_data(input : tuple):
+    if constants.AUDIO_DEBUG:
+        print("final reel values = " + str(input))
     if(re.fullmatch("\([0-9], [0-9], [0-9]\)", str(input))):
         if(input[0] >= len(data)):
             print("Country not in dataset...")
