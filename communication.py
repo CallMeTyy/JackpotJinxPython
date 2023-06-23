@@ -58,7 +58,7 @@ class Communication:
             msg = self.buffer[0]
             arduino.write(str.encode(msg + '\n'))
         else:
-            # endecoder.encode_no_msg()
+            # TODO endecoder.encode_no_msg()
             pass
 
     def initialise(self, baudrate):
