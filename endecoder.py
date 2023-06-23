@@ -74,7 +74,7 @@ def encode_sys_stop():
     return "SYSSTP"
 
 def encode_nodata():
-    return 
+    return "ND"
 
 
 
