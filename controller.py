@@ -186,7 +186,13 @@ class Controller:
 
     def send(self, msg):
         """send message to arduino."""
-        self.comm.send_outgoing(msg, self.arduino)
+        self.comm.buffer_outgoing(msg)
+
+    def send_next_message(self):
+        self.comm.send_next_msg(self.arduino)
+
+    def resend_message(self):
+        self.comm.send_msg(self.arduino)
 
 
 # # testing stuff

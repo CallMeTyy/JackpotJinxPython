@@ -1,13 +1,18 @@
+from collections import deque
+
 import serial
 import serial.tools.list_ports
 
+
 import constants
-import endecoder
-from collections import deque
-import time
 
 
 class Communication:
+
+
+    def __init__(self):
+        self.buffer = deque(["DUMMY"])
+
 
     def get_port(self):
         """Retrieves all ports from device and returns the port applicable for the device OS"""
@@ -36,11 +41,25 @@ class Communication:
             return data_str
         return data_str
 
-    def send_outgoing(self, msg, arduino):
+    def buffer_outgoing(self, msg):
         """Sends the message to the specified arduino"""
         if constants.COMM_DEBUG:
             print("out:" + msg)
-        arduino.write(str.encode(msg + '\n'))
+        self.buffer.append(msg)
+        # arduino.write(str.encode(msg + '\n'))
+
+    def send_next_msg(self, arduino):
+        if len(self.buffer) > 0:
+            self.buffer.popleft()
+        self.send_msg(arduino)
+
+    def send_msg(self, arduino):
+        if len(self.buffer) > 0:
+            msg = self.buffer[0]
+            arduino.write(str.encode(msg + '\n'))
+        else:
+            # endecoder.encode_no_msg()
+            pass
 
     def initialise(self, baudrate):
         """Retrieves the port and sets up the arduino for communication"""
