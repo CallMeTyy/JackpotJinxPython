@@ -134,7 +134,7 @@ def play_one_shot(audio: AudioSegment):
 def play_sfx_loop(index: int):
     """Play certain VFX sound based on index and keep looping."""
     if __get_sfx_audio(index) not in playingLoops:
-        playingLoops[__get_sfx_audio(index)] = play(__get_sfx_audio(index))
+        playingLoops[__get_sfx_audio(index)] = play(__get_sfx_audio(index)*25)
 
 def wait_for_voice_done():
     """Checks if a voiceline or the victory music is playing. returns 0 if voiceline has finished, 1 if victory music has finished and -1 if it is still playing either or not playing at all."""
