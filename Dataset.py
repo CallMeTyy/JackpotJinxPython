@@ -15,13 +15,12 @@ dataAustralia = DataFrame([[627.86,13.73,77.74,146.14],[600.11,13.87,71.02,155.1
 # Create tuple holding all of the datasets.
 data = (dataBritain,dataNevada,dataMacau,dataAustralia)
 
-# Function to retrieve the data from the dataset. Returns float.
+# Function to retrieve data from the dataset. Checks if input is in range, if it is return the datapoint.
 def fetch_data(input : tuple):
+    """Function to retrieve the data from the dataset. Returns float. or nothing if input is out of range."""
     if constants.AUDIO_DEBUG:
         print("final reel values = " + str(input))
-    # Check if input are 3 ints and not something else.
     if(re.fullmatch("\([0-9], [0-9], [0-9]\)", str(input))):
-        #Check if datapoints are out of range.
         if(input[0] >= len(data)):
             print("Country not in dataset...")
         elif(input[1] >= len(data)):
@@ -29,11 +28,9 @@ def fetch_data(input : tuple):
         elif(input[2] > 7):
             print("Year not found in dataset...")
         else:
-            # if datapoints are in range, select the datapoint based on the input values.
             country = data[input[0]]
             game = country[input[1]]
             money_lost = game[input[2]]
-            #return the money lost in the selected datapoint.
             return money_lost
     else:
         print("Input not accepted, it should be in the form of int,int,int")
