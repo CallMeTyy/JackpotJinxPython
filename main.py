@@ -10,7 +10,7 @@ import Audio
 def process_loop(com, ardui, contr):
     """The main loop of the program, controls everything"""
     while True:
-        msg = com.read_incoming(ardui)
+        msg = com.read_incoming(arduino)
         if len(msg) > 0:
             endecoder.decode(msg, contr)
         Audio.handle_loops()

@@ -7,6 +7,7 @@ SIMULATED_SERIAL = False
 # ===== Arduino Settings =====
 ARDUINO_PORT_MAC = '/dev/cu.usbmodem142101'
 ARDUINO_PORT_WINDOWS = 'COM5'
+ARDUINO_PORT_WINDOWS2 = 'COM6'
 ARDUINO_PORT_RASPI = '/dev/ttyACM0'
 BAUD_RATE = 115200
 LOCAL_SEND_DELAY = .01     # in seconds

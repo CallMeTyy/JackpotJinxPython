@@ -19,7 +19,7 @@ class Communication:
                 print(short)
             if short == constants.ARDUINO_PORT_MAC:
                 return short
-            elif short == constants.ARDUINO_PORT_WINDOWS:
+            elif short == constants.ARDUINO_PORT_WINDOWS or short == constants.ARDUINO_PORT_WINDOWS2:
                 return short
             elif short == constants.ARDUINO_PORT_RASPI:
                 return short

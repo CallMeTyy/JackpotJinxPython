@@ -23,9 +23,9 @@ def fetch_data(input : tuple):
     if(re.fullmatch("\([0-9], [0-9], [0-9]\)", str(input))):
         if(input[0] >= len(data)):
             print("Country not in dataset...")
-        elif(input[1] >= len(data[input[0]].shape[0])):
+        elif(input[1] >= data[input[0]].shape[0]):
             print("Game not found in dataset...")
-        elif(input[2] >= len(data[input[0]].shape[1])):
+        elif(input[2] >= data[input[0]].shape[1]):
             print("Year not found in dataset...")
         else:
             country = data[input[0]]

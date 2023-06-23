@@ -115,7 +115,7 @@ def __decode_button(input: str, tail: str):
 def __decode_reel(input: str, tail: str):
     """Specific decoder for the reel"""
     headerdata = int(input[:constants.HEADER_LENGTH][2:])
-    angle = float(tail[constants.HEADER_LENGTH:])
+    angle = float(tail[constants.HEADER_LENGTH:]) % 360
     part = 1
     match headerdata:
         case 1:
