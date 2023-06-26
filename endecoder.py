@@ -25,7 +25,7 @@ def encode_light_height(money):
     mmin = constants.MIN_MONEY
     mmax = constants.MAX_MONEY
     height = round(outmin + (((money - mmin) / (mmax - mmin)) * (outmax - outmin)))
-    return f"LE1PAT{height}"
+    return f"LE1HGT{height}"
 
 def encode_button_light_on(reel: int):
     """Creates the message for sending the command to send to the specified button to turn on their lights"""
@@ -85,7 +85,7 @@ def decode(input: str, controller):
     header = input[:constants.HEADER_LENGTH] # Retrieves the header from the sent message 
     tail = input[constants.TAIL_LENGTH:] # Retrieves the tail
     
-    match header[:-1]: # As the header can contain variable data, remove the last character and only check for the first two chars
+    match header[:2]: # As the header can contain variable data, remove the last character and only check for the first two chars
         case "LE":
             p = __decode_lever(input, tail) # __decode_lever returns a boolean if the tail is P  
             if p: # only if the lever is pulled 
@@ -101,6 +101,7 @@ def decode(input: str, controller):
         case "PL":
             __decode_platform(input, tail, controller)
         case "OK":
+            print("ok received")
             controller.send_next_message()
         case "RS":
             # Resend last message
