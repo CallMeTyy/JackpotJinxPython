@@ -101,7 +101,6 @@ def decode(input: str, controller):
         case "PL":
             __decode_platform(input, tail, controller)
         case "OK":
-            print("ok received")
             controller.send_next_message()
         case "RS":
             # Resend last message
