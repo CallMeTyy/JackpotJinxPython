@@ -1,0 +1,4 @@
+simpleaudio==1.0.4
+pydub==0.25.1
+pandas==2.0.2
+pyserial==3.5
