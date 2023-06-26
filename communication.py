@@ -45,22 +45,25 @@ class Communication:
     def buffer_outgoing(self, msg):
         """Sends the message to the specified arduino"""
         if constants.COMM_DEBUG:
-            print("out:" + msg)
+            print("buf:" + msg)
+        if len(self.buffer) == 0:
+            self.buffer.append("ND")
         self.buffer.append(msg)
         # arduino.write(str.encode(msg + '\n'))
 
     def send_next_msg(self, arduino):
         if len(self.buffer) > 0:
-            self.buffer.popleft()
+            old = self.buffer.popleft()
+            print("deleted:" + old)
         self.send_msg(arduino)
 
     def send_msg(self, arduino):
+        msg = endecoder.encode_nodata()
         if len(self.buffer) > 0:
             msg = self.buffer[0]
-            arduino.write(str.encode(msg + '\n'))
-        else:
-            arduino.write(endecoder.encode_nodata())
-            pass
+        if constants.COMM_DEBUG:
+            print("out:" + msg)
+        arduino.write(str.encode(msg + '\n'))
 
     def initialise(self, baudrate):
         """Retrieves the port and sets up the arduino for communication"""
