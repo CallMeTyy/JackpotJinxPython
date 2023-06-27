@@ -1,12 +1,14 @@
 import constants
+import math
 
 def encode_platform_height(money: float):
     """Creates the message for sending the platform height based on the amount of lost money"""
     outmin = constants.PLATFORM_MINHEIGHT
     outmax = constants.PLATFORM_MAXHEIGHT
-    mmin = constants.MIN_MONEY
-    mmax = constants.MAX_MONEY
-    height = round(outmin + (((money - mmin) / (mmax - mmin)) * (outmax - outmin)))
+    mmin = constants.MIN_MONEY if not constants.LOG_HGT else math.log(constants.MIN_MONEY)
+    mmax = constants.MAX_MONEY if not constants.LOG_HGT else math.log(constants.MAX_MONEY)
+    money_val = money if not constants.LOG_HGT else math.log(money)
+    height = round(outmin + (((money_val - mmin) / (mmax - mmin)) * (outmax - outmin)))
     return f"PLAPOS{min(max(height,0),outmax)}"
 
 def encode_platform_stop():
@@ -22,9 +24,10 @@ def encode_light_height(money):
     """Creates the message for sending the led height to display the money lost."""
     outmin = constants.LED_MINHEIGHT
     outmax = constants.LED_MAXHEIGHT
-    mmin = constants.MIN_MONEY
-    mmax = constants.MAX_MONEY
-    height = round(outmin + (((money - mmin) / (mmax - mmin)) * (outmax - outmin)))
+    mmin = constants.MIN_MONEY if not constants.LOG_LED else math.log(constants.MIN_MONEY)
+    mmax = constants.MAX_MONEY if not constants.LOG_LED else math.log(constants.MAX_MONEY)
+    money_val = money if not constants.LOG_HGT else math.log(money)
+    height = round(outmin + (((money_val - mmin) / (mmax - mmin)) * (outmax - outmin)))
     return f"LE1HGT{height}"
 
 def encode_button_light_on(reel: int):
