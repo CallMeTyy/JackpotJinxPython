@@ -76,7 +76,8 @@ class Communication:
         if len(self.ledbuffer) > 0:
             msg = self.ledbuffer[0]
         if constants.COMM_DEBUG:
-            print("out:" + msg)
+            if constants.COMM_PRINT_OK or msg is not "ND":
+                print("out:" + msg)
         if constants.USE_LED_ARDUINO:
             arduino.write(str.encode(msg + '\n'))
 
@@ -85,7 +86,8 @@ class Communication:
         if len(self.buffer) > 0:
             msg = self.buffer[0]
         if constants.COMM_DEBUG:
-            print("out:" + msg)
+            if constants.COMM_PRINT_OK or msg is not "ND":
+                print("out:" + msg)
         arduino.write(str.encode(msg + '\n'))
 
     def initialise(self, baudrate):
