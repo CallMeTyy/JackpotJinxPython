@@ -15,7 +15,7 @@ class Communication:
         self.buffer = deque(["DUMMY"])
         self.ledbuffer = deque(["DUMMY"])
         self.port_list = [constants.ARDUINO_PORT_MAC, constants.ARDUINO_PORT_WINDOWS,
-                          constants.ARDUINO_PORT_WINDOWS2,constants.ARDUINO_PORT_WINDOWSB,constants.ARDUINO_PORT_RASPI]
+                          constants.ARDUINO_PORT_WINDOWS2,constants.ARDUINO_PORT_WINDOWSB,constants.ARDUINO_PORT_RASPI,constants.ARDUINO_PORT_RASPI2]
 
 
     def get_port(self):
@@ -76,7 +76,8 @@ class Communication:
         if len(self.ledbuffer) > 0:
             msg = self.ledbuffer[0]
         if constants.COMM_DEBUG:
-            print("out:" + msg)
+            if constants.COMM_PRINT_OK or msg is not "ND":
+                print("out:" + msg)
         if constants.USE_LED_ARDUINO:
             arduino.write(str.encode(msg + '\n'))
 

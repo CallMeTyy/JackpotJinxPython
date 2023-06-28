@@ -1,3 +1,5 @@
+import math
+
 import simpleaudio
 from pydub import AudioSegment
 from pydub.playback import _play_with_simpleaudio as play
@@ -150,6 +152,7 @@ def wait_for_voice_done():
 def stop_sfx_loop(index: int):
     """Stop looping sound based on index."""
     if __get_sfx_audio(index) in playingLoops:
+        print(index)
         playingLoops[__get_sfx_audio(index)].stop()
         playingLoops.pop(__get_sfx_audio(index))
 
@@ -161,7 +164,12 @@ def handle_loops():
 
 def play_shredder(value):
     """Plays the shredder sound for a duration tied to the value."""
-    shredder = AudioSegment.from_wav("Audio/SFX/Shredding.wav")[:remap(value, 0.02, 1500, 3, 10) * 1000]
+    if constants.LOG_HGT and value != 0:
+        value = math.log10(value)
+    mmin = constants.MIN_MONEY if not constants.LOG_HGT else math.log(constants.MIN_MONEY)
+    mmax = constants.MAX_MONEY if not constants.LOG_HGT else math.log(constants.MAX_MONEY)
+    shredder = AudioSegment.from_wav("Audio/SFX/Shredding.wav")[:remap(value, mmin, mmax,
+                                                            constants.SHRED_TIME_MIN, constants.SHRED_TIME_MAX) * 1000]
     return play(shredder.fade_out(500))
 
 def remap(old_val, old_min, old_max, new_min, new_max):

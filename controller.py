@@ -52,8 +52,9 @@ class Controller:
             self.send(endecoder.encode_button_light_off(reel_num))
             if constants.AUDIO_DEBUG:
                 print("Playing Stop")
-            Audio.play_vfx_once(3+reel_num)
-            Audio.stop_sfx_loop(reel_num)
+            Audio.play_vfx_once(4+reel_num)
+            # Audio.stop_sfx_loop(reel_num)
+            Audio.stop_sfx_loop(reel_num+1)
             pass
 
     def lever_pulled(self):
@@ -62,15 +63,16 @@ class Controller:
             self.installation_active = True
             self.reels_spinning = True
             Audio.stop_sfx_loop(constants.AUDIO_MUSIC)
+            Audio.stop_sfx_loop(0)
             for i in range(0, 3):
-                self.start_reel_spin(i+1)
+                self.start_reel_spin(i)
             self.send(endecoder.encode_light_pattern(constants.LED_SPIN_PATTERN))
             pass
 
     def start_reel_spin(self, reel_num):
         """Start spinning the specified reel."""
         # print("Reel " + str(reel_num) + " spinning!")
-        Audio.play_sfx_loop(reel_num)
+        Audio.play_sfx_loop(reel_num+1)
         # print(endecoder.encode_reel_setv(reel_num, constants.REEL_SPEED))
         self.send(endecoder.encode_reel_setv(reel_num, constants.REEL_SPEED))
         self.send(endecoder.encode_button_light_on(reel_num))
@@ -156,13 +158,13 @@ class Controller:
 
     def finish_sequence(self):
         """Call when all interactions are done and prepare for next use."""
-        for reel in self.reels_stopped:
-            reel = False
-        for reel in self.reel_values:
-            reel = -1
+        for i in range(0, 3):
+            self.reels_stopped[i] = False
+            self.reel_values[i] = -1
         self.installation_active = False
         self.send(endecoder.encode_light_pattern(constants.LED_IDLE_PATTERN))
         self.platform_stage = 0
+        Audio.play_sfx_loop(0)
         if constants.COMM_DEBUG:
             print("ready for next use!")
 
