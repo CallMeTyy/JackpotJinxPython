@@ -1,3 +1,4 @@
+from email.policy import default
 import constants
 import math
 
@@ -82,7 +83,7 @@ def encode_nodata():
 
 
 
-def decode(input: str, controller):
+def decode(input: str, controller, ledArduino = False):
     """ checks what the header of the message is. After that, goes to specific decoder for the rest"""
     input = input.upper()
     header = input[:constants.HEADER_LENGTH] # Retrieves the header from the sent message 
@@ -104,12 +105,17 @@ def decode(input: str, controller):
         case "PL":
             __decode_platform(input, tail, controller)
         case "OK":
-            controller.send_next_message()
+            if ledArduino:
+                controller.send_next_message_led()
+            else:
+                controller.send_next_message()
         case "RS":
             # Resend last message
-            controller.resend_message()
+            controller.resend_message(ledArduino)
+            print(f"Request for Resend from {'LED' if ledArduino else 'Main'}")
         case "RJ":
             controller.reset_installation()
+            print("Reset request recieved")
         
 
 def __decode_lever(input: str, tail: str):

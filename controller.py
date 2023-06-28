@@ -7,7 +7,7 @@ import Audio
 
 class Controller:
     # reel 0 is country, 1 is game, 2 is year
-    def __init__(self, arduino, serial_com):
+    def __init__(self, arduino, serial_com, secondarduino = ""):
         """Initialize arduino."""
         self.reels_stopped = [False, False, False]
         self.reel_values = [-1, -1, -1]
@@ -21,6 +21,7 @@ class Controller:
         self.platform_stage = 0
         self.play_shredsound = True
         self.currentMoneyLost = 0
+        self.ledarduino = secondarduino
 
     def calibration_finished(self):
         """Call when calibration is done, start playing the standard music."""
@@ -191,8 +192,14 @@ class Controller:
     def send_next_message(self):
         self.comm.send_next_msg(self.arduino)
 
-    def resend_message(self):
-        self.comm.send_msg(self.arduino)
+    def send_next_message_led(self):
+        self.comm.send_next_msg_ledarduino(self.ledarduino)
+
+    def resend_message(self, fromLed = False):
+        if fromLed:
+            self.comm.send_msg_led(self.ledarduino)
+        else:
+            self.comm.send_msg(self.arduino)
 
 
 # # testing stuff

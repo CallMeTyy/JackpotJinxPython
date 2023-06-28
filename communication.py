@@ -13,6 +13,9 @@ class Communication:
 
     def __init__(self):
         self.buffer = deque(["DUMMY"])
+        self.ledbuffer = deque(["DUMMY"])
+        self.port_list = [constants.ARDUINO_PORT_MAC, constants.ARDUINO_PORT_WINDOWS,
+                          constants.ARDUINO_PORT_WINDOWS2,constants.ARDUINO_PORT_WINDOWSB,constants.ARDUINO_PORT_RASPI]
 
 
     def get_port(self):
@@ -23,11 +26,8 @@ class Communication:
             if constants.COMM_DEBUG:
                 print(p)
                 print(short)
-            if short == constants.ARDUINO_PORT_MAC:
-                return short
-            elif short == constants.ARDUINO_PORT_WINDOWS or short == constants.ARDUINO_PORT_WINDOWS2:
-                return short
-            elif short == constants.ARDUINO_PORT_RASPI:
+            if short in self.port_list:
+                self.port_list.remove(short)
                 return short
 
 
@@ -38,7 +38,8 @@ class Communication:
         if len(data_str) > 0:
             data_str = data_str[:-4]
             if constants.COMM_DEBUG:
-                print("in:" + data_str)
+                if data_str != "OK" or constants.COMM_PRINT_OK:
+                    print("in:" + data_str)
             return data_str
         return data_str
 
@@ -46,16 +47,38 @@ class Communication:
         """Sends the message to the specified arduino"""
         if constants.COMM_DEBUG:
             print("buf:" + msg)
-        if len(self.buffer) == 0:
-            self.buffer.append("ND")
-        self.buffer.append(msg)
+        if constants.USE_LED_ARDUINO and msg[:2] == "LE":
+            if len(self.ledbuffer) == 0:
+                self.ledbuffer.append("ND")
+            self.ledbuffer.append(msg)
+        else:
+            if len(self.buffer) == 0:
+                    self.buffer.append("ND")
+            self.buffer.append(msg)
         # arduino.write(str.encode(msg + '\n'))
 
     def send_next_msg(self, arduino):
         if len(self.buffer) > 0:
             old = self.buffer.popleft()
-            print("deleted:" + old)
+            if constants.COMM_DEBUG:
+                print("deleted:" + old)
         self.send_msg(arduino)
+
+    def send_next_msg_ledarduino(self,ledarduino):
+        if len(self.ledbuffer) > 0:
+            old = self.ledbuffer.popleft()
+            if constants.COMM_DEBUG:
+                print("deleted:" + old)
+        self.send_msg_led(ledarduino)
+    
+    def send_msg_led(self, arduino):
+        msg = endecoder.encode_nodata()
+        if len(self.ledbuffer) > 0:
+            msg = self.ledbuffer[0]
+        if constants.COMM_DEBUG:
+            print("out:" + msg)
+        if constants.USE_LED_ARDUINO:
+            arduino.write(str.encode(msg + '\n'))
 
     def send_msg(self, arduino):
         msg = endecoder.encode_nodata()

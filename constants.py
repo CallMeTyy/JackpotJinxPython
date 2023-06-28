@@ -1,6 +1,7 @@
 # ===== Debug Settings =====
 COMM_DEBUG = False
 AUDIO_DEBUG = False
+COMM_PRINT_OK = False
 
 SIMULATED_SERIAL = False
 
@@ -8,10 +9,14 @@ SIMULATED_SERIAL = False
 LOG_HGT = False
 LOG_LED = False
 
+# ===== COMMUNICATION SETTINGS =====
+USE_LED_ARDUINO = False
+
 # ===== Arduino Settings =====
 ARDUINO_PORT_MAC = '/dev/cu.usbmodem142101'
 ARDUINO_PORT_WINDOWS = 'COM5'
 ARDUINO_PORT_WINDOWS2 = 'COM6'
+ARDUINO_PORT_WINDOWSB = 'COM7'
 ARDUINO_PORT_RASPI = '/dev/ttyACM0'
 BAUD_RATE = 115200
 LOCAL_SEND_DELAY = .01     # in seconds
