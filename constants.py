@@ -44,7 +44,10 @@ LED_SPIN_PATTERN = 1
 
 LED_WIN_PATTERN = 2
 
-IMAGE_POSITION_FRACTION = 0.5   # this is where the image is in the angular range of the value on the reel
+REEL_OFFSET = [
+    0, # Country
+    0, # Game
+    0] # Year
 
 # ===== Database Settings =====
 COUNTRY_AMOUNT = 4

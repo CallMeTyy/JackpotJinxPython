@@ -50,7 +50,7 @@ def encode_reel_stop(reel: int, val: int):
             part = (360/constants.GAME_AMOUNT)
         case 3:
             part = (360/constants.YEAR_AMOUNT)
-    angle = round(val * part + part * constants.IMAGE_POSITION_FRACTION)
+    angle = int(val * part + constants.REEL_OFFSET[val])
     return f"RL{reel}STP{angle}"
 
 def encode_reel_setv(reel: int,velocity: int):
@@ -145,7 +145,7 @@ def __decode_reel(input: str, tail: str):
 
         case 3:
             part = (360 / constants.YEAR_AMOUNT)
-    angle = int(angle/part)
+    angle = math.ceil(angle/part)
     if constants.COMM_DEBUG:
         print(f"RL{headerdata} {tail}")
     return (int(headerdata), int(angle))
