@@ -84,7 +84,7 @@ class Communication:
         msg = endecoder.encode_nodata()
         if len(self.buffer) > 0:
             msg = self.buffer[0]
-        if constants.COMM_DEBUG:
+        if constants.COMM_DEBUG and msg != "ND":
             print("out:" + msg)
         arduino.write(str.encode(msg + '\n'))
 

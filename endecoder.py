@@ -90,7 +90,7 @@ def decode(input: str, controller, ledArduino = False):
     tail = input[constants.TAIL_LENGTH:] # Retrieves the tail
     
     match header[:2]: # As the header can contain variable data, remove the last character and only check for the first two chars
-        case "LE":
+        case "LV":
             p = __decode_lever(input, tail) # __decode_lever returns a boolean if the tail is P  
             if p: # only if the lever is pulled 
                 controller.lever_pulled()         
@@ -148,6 +148,8 @@ def __decode_reel(input: str, tail: str):
     angle = math.ceil(angle/part)
     if constants.COMM_DEBUG:
         print(f"RL{headerdata} {tail}")
+    if constants.DEBUG_COUNTRY and headerdata == 0:
+        print(f"COUNTRY IS {'GB' if angle == 0 else 'NEV' if angle == 1 else 'AUS' if angle == 2 else 'MAC'}")
     return (int(headerdata), int(angle))
 
 

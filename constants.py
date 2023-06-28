@@ -1,7 +1,8 @@
 # ===== Debug Settings =====
-COMM_DEBUG = False
+COMM_DEBUG = True
 AUDIO_DEBUG = False
 COMM_PRINT_OK = False
+DEBUG_COUNTRY = True
 
 SIMULATED_SERIAL = False
 
