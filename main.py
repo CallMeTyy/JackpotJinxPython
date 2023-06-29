@@ -26,7 +26,7 @@ def process_loop(com, ardui, contr):
 # Initialise the program and start the loop
 comm = communication.Communication()
 arduino = comm.initialise(constants.BAUD_RATE)
-ledarduino = comm.initialise(constants.BAUD_RATE) if constants.USE_LED_ARDUINO else ""
+ledarduino = comm.initialise(constants.BAUD_RATE, False) if constants.USE_LED_ARDUINO else ""
 # arduino_with_io = io.TextIOWrapper(io.BufferedRWPair(arduino, arduino))
 controller = controller.Controller(arduino, comm,ledarduino)
 process_loop(comm, arduino, controller)

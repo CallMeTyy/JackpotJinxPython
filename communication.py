@@ -16,12 +16,13 @@ class Communication:
         self.ledbuffer = deque(["DUMMY"])
         self.port_list = [constants.ARDUINO_PORT_MAC, constants.ARDUINO_PORT_WINDOWS,
                           constants.ARDUINO_PORT_WINDOWS2,constants.ARDUINO_PORT_WINDOWSB,constants.ARDUINO_PORT_RASPI,
-                          constants.ARDUINO_PORT_WINDOWSC, constants.ARDUINO_PORT_WINDOWSD,constants.ARDUINO_PORT_RASPI2,constants.ARDUINO_PORT_RASPI3,constants.ARDUINO_PORT_RASPI4]
+                          constants.ARDUINO_PORT_WINDOWSC]
+        self.led_port_list = [constants.ARDUINO_PORT_RASPI2,constants.ARDUINO_PORT_RASPI3,constants.ARDUINO_PORT_RASPI4,constants.ARDUINO_PORT_WINDOWSD]
 
 
     def get_port(self):
         """Retrieves all ports from device and returns the port applicable for the device OS"""
-        ports = list(serial.tools.list_ports.comports()).reverse()
+        ports = list(serial.tools.list_ports.comports())
         for p in ports:
             short = str(p).split(' ')[0]
             if constants.COMM_DEBUG:
@@ -31,6 +32,16 @@ class Communication:
                 self.port_list.remove(short)
                 return short
 
+    def get_port_led(self):
+        ports = list(serial.tools.list_ports.comports())
+        for p in ports:
+            short = str(p).split(' ')[0]
+            if constants.COMM_DEBUG:
+                print(p)
+                print(short)
+            if short in self.led_port_list:
+                self.led_port_list.remove(short)
+                return short
 
     def read_incoming(self, arduino):
         """Reads all incoming messages and decodes them into strings"""
@@ -92,9 +103,9 @@ class Communication:
             print("out:" + msg)
         arduino.write(str.encode(msg + '\n'))
 
-    def initialise(self, baudrate):
+    def initialise(self, baudrate, isNormalArduino = True):
         """Retrieves the port and sets up the arduino for communication"""
-        port = self.get_port()
+        port = self.get_port() if isNormalArduino else self.get_port_led()
         
         baud_rate = constants.BAUD_RATE
         arduino = serial.Serial(port=port, baudrate=baud_rate, timeout=1)
