@@ -15,7 +15,8 @@ class Communication:
         self.buffer = deque(["DUMMY"])
         self.ledbuffer = deque(["DUMMY"])
         self.port_list = [constants.ARDUINO_PORT_MAC, constants.ARDUINO_PORT_WINDOWS,
-                          constants.ARDUINO_PORT_WINDOWS2,constants.ARDUINO_PORT_WINDOWSB,constants.ARDUINO_PORT_RASPI,constants.ARDUINO_PORT_RASPI2]
+                          constants.ARDUINO_PORT_WINDOWS2,constants.ARDUINO_PORT_WINDOWSB,constants.ARDUINO_PORT_RASPI,constants.ARDUINO_PORT_RASPI2,
+                          constants.ARDUINO_PORT_WINDOWSC, constants.ARDUINO_PORT_WINDOWSD]
 
 
     def get_port(self):
@@ -77,7 +78,7 @@ class Communication:
         msg = endecoder.encode_nodata()
         if len(self.ledbuffer) > 0:
             msg = self.ledbuffer[0]
-        if constants.COMM_DEBUG:
+        if constants.COMM_DEBUG or constants.DEBUG_LED:
             if constants.COMM_PRINT_OK or msg is not "ND":
                 print("outL:" + msg)
         if constants.USE_LED_ARDUINO:

@@ -153,7 +153,6 @@ def wait_for_voice_done():
 def stop_sfx_loop(index: int):
     """Stop looping sound based on index."""
     if __get_sfx_audio(index) in playingLoops:
-        print(index)
         playingLoops[__get_sfx_audio(index)].stop()
         playingLoops.pop(__get_sfx_audio(index))
 

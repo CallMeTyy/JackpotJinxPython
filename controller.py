@@ -38,7 +38,7 @@ class Controller:
         if not (False in self.reels_stopped):
             self.reels_spinning = False
             money_lost = Dataset.fetch_data((self.reel_values[0], self.reel_values[1], self.reel_values[2]))
-            if constants.COMM_DEBUG:
+            if constants.COMM_DEBUG or constants.DEBUG_COUNTRY:
                 print("money lost: " + str(money_lost))
             self.play_shredsound = money_lost != 0.0
             self.currentMoneyLost = money_lost
