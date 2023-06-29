@@ -21,8 +21,8 @@ class Communication:
 
     def get_port(self):
         """Retrieves all ports from device and returns the port applicable for the device OS"""
-        ports = list(serial.tools.list_ports.comports())
-        for p in ports.reverse():
+        ports = list(serial.tools.list_ports.comports()).reverse()
+        for p in ports:
             short = str(p).split(' ')[0]
             if constants.COMM_DEBUG:
                 print(p)
