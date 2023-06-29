@@ -95,9 +95,10 @@ class Communication:
     def initialise(self, baudrate):
         """Retrieves the port and sets up the arduino for communication"""
         port = self.get_port()
-        print("Initialised Device on port "+port)
+        
         baud_rate = constants.BAUD_RATE
         arduino = serial.Serial(port=port, baudrate=baud_rate, timeout=1)
+        print("Initialised Device on port "+port)
         return arduino
 
 
