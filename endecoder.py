@@ -58,7 +58,7 @@ def encode_reel_stop(reel: int, val: int):
             part = (360/constants.GAME_AMOUNT)
         case 2:
             part = (360/constants.YEAR_AMOUNT)
-    angle = int(val * part + constants.REEL_OFFSET[val])
+    angle = int(val * part + constants.REEL_OFFSET[reel])
     return f"RL{reel}STP{angle}"
 
 def encode_reel_setv(reel: int,velocity: int):
@@ -144,20 +144,25 @@ def __decode_reel(input: str, tail: str):
     headerdata = int(input[:constants.HEADER_LENGTH][2:])
     angle = float(tail[constants.HEADER_LENGTH:]) % 360
     part = 1
+    amt = 0
     match headerdata:
         case 0:
             part = (360 / constants.COUNTRY_AMOUNT)
-
+            amt = constants.COUNTRY_AMOUNT
         case 1:
             part = (360 / constants.GAME_AMOUNT)
-
+            amt = constants.GAME_AMOUNT
         case 2:
             part = (360 / constants.YEAR_AMOUNT)
-    angle = math.ceil(angle/part)
+            amt = constants.YEAR_AMOUNT
+    angle = math.ceil(angle/part) % amt
     if constants.COMM_DEBUG:
         print(f"RL{headerdata} {tail}")
     if constants.DEBUG_COUNTRY and headerdata == 0:
         print(f"COUNTRY IS {'GB' if angle == 0 else 'NEV' if angle == 1 else 'AUS' if angle == 2 else 'MAC'}")
+    elif headerdata == 1:
+        print(f"GAME IS {'LOT' if angle == 0 else 'CAS' if angle == 1 else 'BET' if angle == 2 else 'BIN'}")
+
     return (int(headerdata), int(angle))
 
 

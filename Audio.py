@@ -23,37 +23,37 @@ def _getCountryWav(input):
         return AudioSegment.from_wav("Audio/Countries/Britain.wav")
     elif(input == 1):
         return AudioSegment.from_wav("Audio/Countries/Nevada.wav")
-    elif(input == 2):
-        return AudioSegment.from_wav("Audio/Countries/Macau.wav")
     elif(input == 3):
+        return AudioSegment.from_wav("Audio/Countries/Macau.wav")
+    elif(input == 2):
         return AudioSegment.from_wav("Audio/Countries/Australia.wav")
     return
 
 def _getGameWav(input):
     """Retrieve AudioSegment for certain game."""
-    if(input == 0):
+    if(input == 1):
         return AudioSegment.from_wav("Audio/Games/Casinos.wav")
-    elif(input == 1):
-        return AudioSegment.from_wav("Audio/Games/Bingo.wav")
-    elif(input == 2):
-        return AudioSegment.from_wav("Audio/Games/Lotteries.wav")
     elif(input == 3):
+        return AudioSegment.from_wav("Audio/Games/Bingo.wav")
+    elif(input == 0):
+        return AudioSegment.from_wav("Audio/Games/Lotteries.wav")
+    elif(input == 2):
         return AudioSegment.from_wav("Audio/Games/Sportsbetting.wav")
     return
 
 def _getYearWav(input):
     """Retrieve AudioSegment for certain year."""
-    if(input == 0):
+    if(input == 5):
         return AudioSegment.from_wav("Audio/Years/2015.wav")
-    elif(input == 1):
-        return AudioSegment.from_wav("Audio/Years/2016.wav")
-    elif(input == 2):
-        return AudioSegment.from_wav("Audio/Years/2017.wav")
-    elif(input == 3):
-        return AudioSegment.from_wav("Audio/Years/2018.wav")
     elif(input == 4):
+        return AudioSegment.from_wav("Audio/Years/2016.wav")
+    elif(input == 3):
+        return AudioSegment.from_wav("Audio/Years/2017.wav")
+    elif(input == 2):
+        return AudioSegment.from_wav("Audio/Years/2018.wav")
+    elif(input == 1):
         return AudioSegment.from_wav("Audio/Years/2019.wav")
-    elif(input == 5):
+    elif(input == 0):
         return AudioSegment.from_wav("Audio/Years/2020.wav")
     elif(input == 6):
         return AudioSegment.from_wav("Audio/Years/2021.wav")
