@@ -87,7 +87,8 @@ def __get_sfx_audio(index: int):
 
 def _getDataWav(input : tuple):
     """Retrieve AudioSegment for certain datapoint."""
-    path = "Audio/Data/" + str(input[0]) + str(input[1]) + str(input[2]) + ".wav"
+    gameNum = 3-input[1]
+    path = "Audio/Data/" + str(input[0]) + str(gameNum) + str(input[2]) + ".wav"
     if(Path(path).is_file()):
         return AudioSegment.from_wav(path)
     else:
