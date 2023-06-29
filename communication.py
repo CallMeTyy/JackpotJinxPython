@@ -15,8 +15,8 @@ class Communication:
         self.buffer = deque(["DUMMY"])
         self.ledbuffer = deque(["DUMMY"])
         self.port_list = [constants.ARDUINO_PORT_MAC, constants.ARDUINO_PORT_WINDOWS,
-                          constants.ARDUINO_PORT_WINDOWS2,constants.ARDUINO_PORT_WINDOWSB,constants.ARDUINO_PORT_RASPI,constants.ARDUINO_PORT_RASPI2,
-                          constants.ARDUINO_PORT_WINDOWSC, constants.ARDUINO_PORT_WINDOWSD,constants.ARDUINO_PORT_RASPI3,constants.ARDUINO_PORT_RASPI4]
+                          constants.ARDUINO_PORT_WINDOWS2,constants.ARDUINO_PORT_WINDOWSB,constants.ARDUINO_PORT_RASPI,
+                          constants.ARDUINO_PORT_WINDOWSC, constants.ARDUINO_PORT_WINDOWSD,constants.ARDUINO_PORT_RASPI2,constants.ARDUINO_PORT_RASPI3,constants.ARDUINO_PORT_RASPI4]
 
 
     def get_port(self):
