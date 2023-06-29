@@ -15,7 +15,8 @@ class Communication:
         self.buffer = deque(["DUMMY"])
         self.ledbuffer = deque(["DUMMY"])
         self.port_list = [constants.ARDUINO_PORT_MAC, constants.ARDUINO_PORT_WINDOWS,
-                          constants.ARDUINO_PORT_WINDOWS2,constants.ARDUINO_PORT_WINDOWSB,constants.ARDUINO_PORT_RASPI,constants.ARDUINO_PORT_RASPI2]
+                          constants.ARDUINO_PORT_WINDOWS2,constants.ARDUINO_PORT_WINDOWSB,constants.ARDUINO_PORT_RASPI,constants.ARDUINO_PORT_RASPI2,
+                          constants.ARDUINO_PORT_WINDOWSC, constants.ARDUINO_PORT_WINDOWSD]
 
 
     def get_port(self):
@@ -45,13 +46,15 @@ class Communication:
 
     def buffer_outgoing(self, msg):
         """Sends the message to the specified arduino"""
-        if constants.COMM_DEBUG:
-            print("buf:" + msg)
         if constants.USE_LED_ARDUINO and msg[:2] == "LE":
+            if constants.COMM_DEBUG:
+                print("bufL:" + msg)
             if len(self.ledbuffer) == 0:
                 self.ledbuffer.append("ND")
             self.ledbuffer.append(msg)
         else:
+            if constants.COMM_DEBUG:
+                print("buf:" + msg)
             if len(self.buffer) == 0:
                     self.buffer.append("ND")
             self.buffer.append(msg)
@@ -68,16 +71,16 @@ class Communication:
         if len(self.ledbuffer) > 0:
             old = self.ledbuffer.popleft()
             if constants.COMM_DEBUG:
-                print("deleted:" + old)
+                print("deletedL:" + old)
         self.send_msg_led(ledarduino)
     
     def send_msg_led(self, arduino):
         msg = endecoder.encode_nodata()
         if len(self.ledbuffer) > 0:
             msg = self.ledbuffer[0]
-        if constants.COMM_DEBUG:
+        if constants.COMM_DEBUG or constants.DEBUG_LED:
             if constants.COMM_PRINT_OK or msg is not "ND":
-                print("out:" + msg)
+                print("outL:" + msg)
         if constants.USE_LED_ARDUINO:
             arduino.write(str.encode(msg + '\n'))
 
