@@ -55,9 +55,9 @@ LED_SPIN_PATTERN = 1
 LED_WIN_PATTERN = 2
 
 REEL_OFFSET = [
-    -10, # Country
+    -5, # Country
     -15, # Game
-    10] # Year
+    7] # Year
 
 # ===== Database Settings =====
 COUNTRY_AMOUNT = 4
