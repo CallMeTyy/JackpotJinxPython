@@ -169,7 +169,7 @@ def play_shredder(value):
     mmin = constants.MIN_MONEY if not constants.LOG_HGT else math.log(constants.MIN_MONEY)
     mmax = constants.MAX_MONEY if not constants.LOG_HGT else math.log(constants.MAX_MONEY)
     shredder = AudioSegment.from_wav("Audio/SFX/Shredding.wav")[:remap(value, mmin, mmax,
-                                                            constants.SHRED_TIME_MIN, constants.SHRED_TIME_MAX) * 1000]
+                                                            constants.SHRED_TIME_MIN, constants.SHRED_TIME_MAX) * 1000] + constants.AUDIO_BOOST + 3
     return play(shredder.fade_out(500))
 
 def remap(old_val, old_min, old_max, new_min, new_max):
