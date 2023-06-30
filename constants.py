@@ -12,7 +12,10 @@ LOG_HGT = True
 LOG_LED = False
 
 # ===== COMMUNICATION SETTINGS =====
-USE_LED_ARDUINO = True
+USE_LED_ARDUINO = False
+
+# ===== AUDIO BOOST =====
+AUDIO_BOOST = 0  # in dB, 3 seems to be with little clipping
 
 # ===== Arduino Settings =====
 ARDUINO_PORT_MAC = '/dev/cu.usbmodem142101'

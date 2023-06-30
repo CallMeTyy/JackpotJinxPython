@@ -20,77 +20,77 @@ win = AudioSegment.from_wav("Audio/SFX/Win.wav")
 def _getCountryWav(input):
     """Retrieve AudioSegment for certain country."""
     if(input == 0):
-        return AudioSegment.from_wav("Audio/Countries/Britain.wav")
+        return AudioSegment.from_wav("Audio/Countries/Britain.wav") + constants.AUDIO_BOOST
     elif(input == 1):
-        return AudioSegment.from_wav("Audio/Countries/Nevada.wav")
+        return AudioSegment.from_wav("Audio/Countries/Nevada.wav") + constants.AUDIO_BOOST
     elif(input == 3):
-        return AudioSegment.from_wav("Audio/Countries/Macau.wav")
+        return AudioSegment.from_wav("Audio/Countries/Macau.wav") + constants.AUDIO_BOOST
     elif(input == 2):
-        return AudioSegment.from_wav("Audio/Countries/Australia.wav")
+        return AudioSegment.from_wav("Audio/Countries/Australia.wav") + constants.AUDIO_BOOST
     return
 
 def _getGameWav(input):
     """Retrieve AudioSegment for certain game."""
     if(input == 1):
-        return AudioSegment.from_wav("Audio/Games/Casinos.wav")
+        return AudioSegment.from_wav("Audio/Games/Casinos.wav") + constants.AUDIO_BOOST
     elif(input == 3):
-        return AudioSegment.from_wav("Audio/Games/Bingo.wav")
+        return AudioSegment.from_wav("Audio/Games/Bingo.wav") + constants.AUDIO_BOOST
     elif(input == 0):
-        return AudioSegment.from_wav("Audio/Games/Lotteries.wav")
+        return AudioSegment.from_wav("Audio/Games/Lotteries.wav") + constants.AUDIO_BOOST
     elif(input == 2):
-        return AudioSegment.from_wav("Audio/Games/Sportsbetting.wav")
+        return AudioSegment.from_wav("Audio/Games/Sportsbetting.wav") + constants.AUDIO_BOOST
     return
 
 def _getYearWav(input):
     """Retrieve AudioSegment for certain year."""
     if(input == 5):
-        return AudioSegment.from_wav("Audio/Years/2015.wav")
+        return AudioSegment.from_wav("Audio/Years/2015.wav") + constants.AUDIO_BOOST
     elif(input == 4):
-        return AudioSegment.from_wav("Audio/Years/2016.wav")
+        return AudioSegment.from_wav("Audio/Years/2016.wav") + constants.AUDIO_BOOST
     elif(input == 3):
-        return AudioSegment.from_wav("Audio/Years/2017.wav")
+        return AudioSegment.from_wav("Audio/Years/2017.wav") + constants.AUDIO_BOOST
     elif(input == 2):
-        return AudioSegment.from_wav("Audio/Years/2018.wav")
+        return AudioSegment.from_wav("Audio/Years/2018.wav") + constants.AUDIO_BOOST
     elif(input == 1):
-        return AudioSegment.from_wav("Audio/Years/2019.wav")
+        return AudioSegment.from_wav("Audio/Years/2019.wav") + constants.AUDIO_BOOST
     elif(input == 0):
-        return AudioSegment.from_wav("Audio/Years/2020.wav")
+        return AudioSegment.from_wav("Audio/Years/2020.wav") + constants.AUDIO_BOOST
     elif(input == 6):
-        return AudioSegment.from_wav("Audio/Years/2021.wav")
+        return AudioSegment.from_wav("Audio/Years/2021.wav") + constants.AUDIO_BOOST
     return
 
 def __get_sfx_audio(index: int):
     """Retrieve AudioSegment for certain SFX."""
     match index:
         case 0:
-            return AudioSegment.from_wav("Audio/SFX/CasinoMusic.wav")
+            return AudioSegment.from_wav("Audio/SFX/CasinoMusic.wav") + constants.AUDIO_BOOST
         case 1:
-            return AudioSegment.from_wav("Audio/SFX/FirstWheelSpinning.wav")
+            return AudioSegment.from_wav("Audio/SFX/FirstWheelSpinning.wav") + constants.AUDIO_BOOST
         case 2:
-            return AudioSegment.from_wav("Audio/SFX/SecondWheelSpinning.wav")
+            return AudioSegment.from_wav("Audio/SFX/SecondWheelSpinning.wav") + constants.AUDIO_BOOST
         case 3:
-            return AudioSegment.from_wav("Audio/SFX/ThirdWheelSpinning.wav")
+            return AudioSegment.from_wav("Audio/SFX/ThirdWheelSpinning.wav") + constants.AUDIO_BOOST
         case 4:
-            return AudioSegment.from_wav("Audio/SFX/ConfirmFirstWheel.wav")
+            return AudioSegment.from_wav("Audio/SFX/ConfirmFirstWheel.wav") + constants.AUDIO_BOOST
         case 5:
-            return AudioSegment.from_wav("Audio/SFX/ConfirmSecondWheel.wav")
+            return AudioSegment.from_wav("Audio/SFX/ConfirmSecondWheel.wav") + constants.AUDIO_BOOST
         case 6:
-            return AudioSegment.from_wav("Audio/SFX/ConfirmThirdWheel.wav")
+            return AudioSegment.from_wav("Audio/SFX/ConfirmThirdWheel.wav") + constants.AUDIO_BOOST
         case 7:
-            return AudioSegment.from_wav("Audio/SFX/Shredding.wav")
+            return AudioSegment.from_wav("Audio/SFX/Shredding.wav") + constants.AUDIO_BOOST
         case 8:
-            return AudioSegment.from_wav("Audio/SFX/ConfirmThirdWheel.wav")
+            return AudioSegment.from_wav("Audio/SFX/ConfirmThirdWheel.wav") + constants.AUDIO_BOOST
         case 9:
-            return AudioSegment.from_wav("Audio/SFX/PlatformRising.wav")
+            return AudioSegment.from_wav("Audio/SFX/PlatformRising.wav") + constants.AUDIO_BOOST
         case 10:
-            return AudioSegment.from_wav("Audio/SFX/Win.wav")
+            return AudioSegment.from_wav("Audio/SFX/Win.wav") + constants.AUDIO_BOOST
 
 def _getDataWav(input : tuple):
     """Retrieve AudioSegment for certain datapoint."""
     gameNum = 3-input[1]
     path = "Audio/Data/" + str(input[0]) + str(gameNum) + str(input[2]) + ".wav"
     if(Path(path).is_file()):
-        return AudioSegment.from_wav(path)
+        return AudioSegment.from_wav(path) + constants.AUDIO_BOOST
     else:
        return "Not Found"
 
