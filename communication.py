@@ -92,7 +92,7 @@ class Communication:
         if constants.COMM_DEBUG or constants.DEBUG_LED:
             if constants.COMM_PRINT_OK or msg is not "ND":
                 print("outL:" + msg)
-        if constants.USE_LED_ARDUINO:
+        if constants.USE_LED_ARDUINO and msg[:3] != "LE2":
             arduino.write(str.encode(msg + '\n'))
 
     def send_msg(self, arduino):
