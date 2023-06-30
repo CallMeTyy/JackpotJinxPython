@@ -3,7 +3,7 @@ COMM_DEBUG = False
 AUDIO_DEBUG = False
 COMM_PRINT_OK = False
 DEBUG_COUNTRY = True
-DEBUG_LED = False
+DEBUG_LED = True
 
 SIMULATED_SERIAL = False
 
@@ -12,7 +12,7 @@ LOG_HGT = True
 LOG_LED = False
 
 # ===== COMMUNICATION SETTINGS =====
-USE_LED_ARDUINO = False
+USE_LED_ARDUINO = True
 
 # ===== AUDIO BOOST =====
 AUDIO_BOOST = 0  # in dB, 3 seems to be with little clipping
