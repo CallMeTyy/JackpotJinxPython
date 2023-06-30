@@ -13,7 +13,7 @@ __wait_for_sounds = {}
 
 Congratulations = AudioSegment.from_wav("Audio/Standard/Congratulations.wav") + constants.AUDIO_BOOST
 
-music = simpleaudio.WaveObject.from_wave_file("Audio/Standard/Congratulations.wav") + constants.AUDIO_BOOST
+music = AudioSegment.from_wav("Audio/Standard/Congratulations.wav") + constants.AUDIO_BOOST
 
 win = AudioSegment.from_wav("Audio/SFX/Win.wav") + constants.AUDIO_BOOST
 
