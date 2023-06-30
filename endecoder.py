@@ -124,6 +124,8 @@ def decode(input: str, controller, ledArduino = False):
         case "RJ":
             controller.reset_installation()
             print("Reset request recieved")
+        case "GG":
+            print(input)
         
 
 def __decode_lever(input: str, tail: str):
